@@ -44,5 +44,5 @@ Install all necessary packages            :done,    des32, 2021-09-25-18.30,2021
 Initialize and Configure Mosquitto            :done,    des33, 2021-09-25-18.45,2021-09-25-21.00
 Enable Authentication System            :done,    des34, 2021-09-25-21.30,2021-09-25-22.00
 Finalize Mosquitto           :done,    des35, 2021-09-25-22.15,2021-09-26-00.00
-Deploy MongoDB Server           :done,    des36, 2021-09-26-00.00,2021-09-26-00.01
+Deploy Mosquitto Server           :done,    des36, 2021-09-26-00.00,2021-09-26-00.01
 ```
