@@ -20,7 +20,6 @@ In this server we will use FreeBSD for our server operating system to install Mo
     4. [x] Start and deploy the server.
 3. [x] OpenVPN Server
 
-<!-- ### Progress Timing Graph -->
 ```mermaid
 gantt
 dateFormat  YYYY-MM-DD-HH.mm
@@ -41,8 +40,8 @@ Deploy MongoDB Server           :done,    des26, 2021-09-25-18.00,2021-09-25-18.
 section Mosquitto Server(Broker)
 Create FreeBSD Jail           :done,    des31, 2021-09-25-16.15,2021-09-25-16.30
 Install all necessary packages            :done,    des32, 2021-09-25-18.30,2021-09-25-18.45
-Initialize and Configure Mosquitto            :done,    des33, 2021-09-25-18.45,2021-09-25-21.00
+Initialize and Configure Mosquitto Server(Broker)            :done,    des33, 2021-09-25-18.45,2021-09-25-21.00
 Enable Authentication System            :done,    des34, 2021-09-25-21.30,2021-09-25-22.00
-Finalize Mosquitto           :done,    des35, 2021-09-25-22.15,2021-09-26-00.00
-Deploy MongoDB Server           :done,    des36, 2021-09-26-00.00,2021-09-26-00.01
+Finalize Mosquitto Server(Broker)           :done,    des35, 2021-09-25-22.15,2021-09-26-00.00
+Deploy Mosquitto Server(Broker)           :done,    des36, 2021-09-26-00.00,2021-09-26-00.01
 ```

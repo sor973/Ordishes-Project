@@ -1,0 +1,44 @@
+  .QRHead{
+    border: 1px solid hsl(0, 0%, 0%);
+    text-align: center;
+    font-size: 24px;
+    color: #000000;
+    padding: 1px;
+    background: #D4AF37 ;
+  }
+
+  .Box {
+    border: 2px solid hsl(0, 0%, 0%);
+    text-align: center;
+    font-size: 36px;
+    background:#FFFFF0;
+  }
+  
+  .CashQR {
+  margin: 125px;
+  }
+  
+    .Input__field {
+      padding: 16px;
+      font-size: 28px;
+      background-color: #c0c0c0;
+      width: 82.19%;
+      border: none;
+    }
+    
+    .Input__field:focus {
+      font-size: 28px;
+      outline: none;
+    }
+  
+  .Post {
+    height: auto;
+    padding: 10px;
+    margin: auto auto;
+  }
+
+  .Post__Submit{
+    text-align:center;
+    margin: auto;
+    height: auto;
+  }

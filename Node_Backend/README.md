@@ -1,2 +1,53 @@
-# Ordishes Project - NodeJS backend
+Back-End Nodejs
+---------------------------------
+For the Back-End Customer side, we will use node.js to connect Front-End and Database by sending or receiving the data via MQTT and MongoDB, Node.js will handle all the necessary things in the Customer side Example. request data from Database and send API to show it in Front-End or registry some information to Database
 
+---------------------------------
+
+**Progress**
+
+- QR-Code
+
+    1. Receive Table number from Front-End 
+    2. Generate token
+    3. Process The data and send it via MQTT in this form {datatype:1, table:85, token:"123456"}
+    4. Send URL with the token back to The Front-End like this “https://www.ordishes.com/?token=as#pf” 
+
+---------------------------------
+**TASK LIST**
+
+- [x] QR-Code
+    - [x] recieve table data
+    - [x] generate token
+    - [x] send data to MQTT
+    - [x] send url API
+- [ ]  Orders
+    - [ ] recieve order 
+    - [ ] send data to mqtt
+    - [ ] something more idk yet
+- [ ]  Kitchen
+
+
+----------------------------------------
+INSTALL NODE_MODULES BEFORE RUNNING 
+----------------------------------------
+LIST OF NODE_MODULES
+- nodemon
+- mqtt
+- generate-password
+- express
+- cors
+
+----------------------------------------
+
+You can istall NODE_MODULES BY usig this command **PS. cd to BackEnd folder first** \
+`npm install`
+
+----------------------------------------
+
+You can start backend server BY usig this command 
+`npx nodemon`
+
+----------------------------------------
+sever will start at port 8000
+you can access by go to 'http://localhost:8000/urlapi'
