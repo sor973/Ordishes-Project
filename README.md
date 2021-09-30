@@ -20,7 +20,6 @@ In this server we will use FreeBSD for our server operating system to install Mo
     4. [x] Start and deploy the server.
 3. [x] OpenVPN Server
 
-<!-- ### Progress Timing Graph -->
 ```mermaid
 gantt
 dateFormat  YYYY-MM-DD-HH.mm
