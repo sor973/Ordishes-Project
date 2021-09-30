@@ -1,0 +1,32 @@
+.confirm-list {
+    display: grid;
+    box-sizing: border-box;
+    margin: auto;
+    border: 1px solid;
+}
+
+.btn-submit-block {
+    
+}
+
+.btn-submit {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    align-items: center;
+}
+
+.top-table {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    text-align: center;
+    box-sizing: border-box;
+    border-bottom: 1px solid;
+
+}
+
+table tr th {
+    width: 100%;
+
+}
+

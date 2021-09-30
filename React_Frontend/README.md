@@ -1,4 +1,4 @@
-# Ordishes Project - React Frontend (update at 30/09/2021)
+# Front-End side (update at 30/09/2021)
 ในฝั่ง front-end เราแบ่งขั้นตอนหลัก ๆ สองอย่างคือ 
 1. User interface design.
 2. Coding button function to connect to back-end side.
@@ -38,4 +38,24 @@
 
 
 
+----------------------------------------
+INSTALL NODE_MODULES BEFORE RUNNING 
+----------------------------------------
+LIST OF NODE_MODULES
+- axios
+- react
+- qrcode
+- react-router-dom
+----------------------------------------
 
+You can istall NODE_MODULES BY usig this command  **ps.cd to frontend folder first** \
+`npm install`
+
+----------------------------------------
+
+You can start backend server BY usig this command 
+`npm start`
+
+----------------------------------------
+sever will start at port 3000
+you can access by go to 'http://localhost:3000/menu' or 'http://localhost:3000/qrcode'
