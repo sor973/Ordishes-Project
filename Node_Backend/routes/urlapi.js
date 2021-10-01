@@ -10,10 +10,18 @@ const option = {
 
 router.all('/', function(req, res, next) {
 
-    let {name} = req.body
+    let resp = req.body;
+
+    if(!Number.isInteger(resp.table)){
+      return res.status(400).send("Table number need to be an integer.");
+    }
+
+    if(resp.table<1 || resp.table>50){
+      return res.status(400).send("Invalid Table Number");
+    }
 
     var key = generator.generate({length: 10,numbers: true});
-    const data = {"datatype": 1, "Table": name,"token": key}
+    const data = {"datatype": 1, "Table": resp.table,"token": key}
     const jsonStr = JSON.stringify(data);
     
     let web  = `https://www.ordishes.com/?token=${key}`;
