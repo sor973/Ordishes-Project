@@ -8,21 +8,27 @@ const CashQR = () => {
   const [url, setURL] = useState("");
   const [name, setName] = useState("");
   const [qrcode, setQR] = useState("");
+  const [errors,setError] = useState([]);
 
   async function postTable(e) {
     e.preventDefault()
-
-    try {
+    let x = +name;
+    const Table = {
+      "table" : x
+    }
+    
       await axios.post("http://localhost:8000/urlapi", {
-        name
+        Table
       }).then((response) => {
         setURL(response.data);
+        setError(null)
         console.log(response.data);
+        
+      }).catch (e => {
+        setError(e.response.data);
+        console.log(e.response.data)
       })
-      // await QRcode.toDataURL(url).then(setQR);
-    } catch (error) {
-      console.log(error)
-    }
+     
   }
 
   function qr(e) {
@@ -36,6 +42,7 @@ const CashQR = () => {
 
   return (
     <div className="CashQR">
+      { errors && <div>{errors}</div>}
       <form onSubmit={postTable}>
         <div className="Box">Enter table :
           <input className="Input__field" type="text" value={name} onChange={(e) => setName(e.target.value)} />
