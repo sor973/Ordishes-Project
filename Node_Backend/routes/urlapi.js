@@ -25,21 +25,21 @@ router.all('/', async function(req, res, next) {
 
     console.log(resp);
 
-    if((await resp.table) == 0)  {
+    if((resp.table) == 0)  {
       return res.status(400).send("Table number is need.");
     }
 
-    if(await !Number.isInteger(resp.table)){
+    if(!Number.isInteger(resp.table)){
       return res.status(400).send("Table number need to be an integer.");
     }
 
-    if(await resp.table<1 || resp.table>50){
+    if(resp.table<1 || resp.table>50){
       return res.status(400).send("Invalid Table Number");
     }
 
     const findResult = await collection.find({table:resp.table}).toArray();
   
-    if (await !_.isEmpty(findResult)) {
+    if (!_.isEmpty(findResult)) {
       return res.status(400).send("This Table is already assign");
     }
 

@@ -22,9 +22,11 @@ For the Back-End Customer side, we will use node.js to connect Front-End and Dat
     - [x] send data to MQTT
     - [x] send url API
 - [ ]  Orders
-    - [ ] recieve order 
-    - [ ] send data to mqtt
-    - [ ] something more idk yet
+    - [x] recieve order 
+    - [ ] request status 
+    - [ ] cancel order 
+    - [ ] list of order
+
 - [ ]  Kitchen
 
 
