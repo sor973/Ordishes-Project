@@ -14,7 +14,7 @@ const option = {
 };
 
 
-router.all('/', async function(req, res, next) {
+router.post('/', async function(req, res, next) {
     
     const client2 = new MongoClient(url);
     await client2.connect();

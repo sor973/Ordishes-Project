@@ -6,7 +6,7 @@ const url = 'mongodb://cpre_softdev:xh8Av6Qqe6goj66Ms7gr9nxiv4N6J4ZZ@192.168.42.
 const dbName = 'development';
 
 
-router.all('/', async function(req, res, next) {
+router.get('/', async function(req, res, next) {
 
     const client = new MongoClient(url);
     await client.connect();
@@ -15,9 +15,7 @@ router.all('/', async function(req, res, next) {
     const findmenu = await collection.find({datatype:20}).toArray();
     console.log('Found documents =>', findmenu[0]);
     res.send(findmenu[0].menu);
-
-
-
+    
   });
   
 module.exports = router;

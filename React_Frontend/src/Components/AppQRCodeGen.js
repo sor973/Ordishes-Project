@@ -18,7 +18,7 @@ function AppQRCodeGen() {
             "table": x
         }
 
-        await axios.post("http://localhost:8000/urlapi", {
+        await axios.post("http://localhost:8000/api/url", {
             Table
         }).then((response) => {
             setURL(response.data);
