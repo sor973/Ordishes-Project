@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Container, Row } from 'react-bootstrap';
 import './App.css';
+import menus from './Components/data/menus';
 
 import AppNavbar from './Components/AppNavbar';
 import AppMenu from './Components/AppMenu';
@@ -16,18 +17,12 @@ import AppQRCodeGen from './Components/AppQRCodeGen';
 
 function App() {
     var menuArray = [];
-    function randomID() {
-        let rand = Math.floor(Math.random() * 6);
-        if (rand === 0) rand = 1;
-        return rand;
-    }
-    function loopThroughMenu(times) {
-        for (let ind = 0; ind < times; ind++) {
-            let ID = randomID();
-            menuArray.push(<AppMenu menuid={ID} />);
+    function loopThroughMenu() {
+        for (let ind = 0; ind < menus.length; ind++) {
+            menuArray.push(<AppMenu menuid={ind} />);
         }
     }
-    loopThroughMenu(10);
+    loopThroughMenu();
     return (
         <Router>
             <Switch>
