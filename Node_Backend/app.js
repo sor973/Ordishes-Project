@@ -3,11 +3,10 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var mqtt = require('mqtt');
 
 var indexRouter = require('./routes/index');
 var urlapiRouter = require('./routes/urlapi');
-// var orderapiRouter = require('./routes/orderapi');
+var orderapiRouter = require('./routes/orderapi');
 var menuapiRouter = require('./routes/menuapi');
 var app = express();
 
@@ -28,7 +27,7 @@ app.use(cors())
 
 app.use('/', indexRouter);
 app.use('/urlapi', urlapiRouter);
-// app.use('/orderapi', orderapiRouter);
+app.use('/orderapi', orderapiRouter);
 app.use('/menuapi', menuapiRouter);
 
 // catch 404 and forward to error handler

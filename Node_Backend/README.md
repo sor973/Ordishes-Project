@@ -23,9 +23,9 @@ For the Back-End Customer side, we will use node.js to connect Front-End and Dat
     - [x] send url API
 - [ ]  Orders
     - [x] recieve order 
-    - [ ] request status 
-    - [ ] cancel order 
-    - [ ] list of order
+    - [x] request status 
+    - [x] cancel order 
+    - [x] list of order
 
 - [ ]  Kitchen
 
