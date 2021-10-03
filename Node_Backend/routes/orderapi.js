@@ -52,7 +52,7 @@ router.all('/', async function(req, res, next) {
         list.push(findstatus[i].menu[0]);
       }
       console.log(list)
-      return res.send("kuy yai")
+      return res.send(list)
     }
     if(resp.datatype == 6){
       // list of order 
