@@ -1,13 +1,24 @@
 import React from 'react'
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Row, Col, Card, Button, Form, InputGroup as div } from 'react-bootstrap'
+import { Row, Col, Card, Button, Form, ButtonGroup} from 'react-bootstrap'
 import menus from './data/menus';
 
 
 function AppMenu({menuid}) {
     var menuindex = (menuid||1) - 1;
     var menu = menus[menuindex]
+    const [dish, updateDish] = useState(0);
+    function decreaseDishAmount(){
+        if(dish > 0){
+            let currentDishAmount = dish;
+            updateDish(currentDishAmount-1);
+        }
+    }
+    function increaseDishAmount(){
+        let currentDishAmount = dish;
+        updateDish(currentDishAmount+1);
+    }
 
     return (
         <Col sm="12" lg="4">
@@ -29,18 +40,13 @@ function AppMenu({menuid}) {
                                     <Form>
                                         <Row>
                                             <Col>
-                                                <div className="input-group">
-                                                    <select className="custom-select" id="inputGroupSelect04">
-                                                        <option selected>Choose...</option>
-                                                        <option value="1">1</option>
-                                                        <option value="2">2</option>
-                                                        <option value="3">3</option>
-                                                        <option value="4">4</option>
-                                                        <option value="5">5</option>
-                                                    </select>
-                                                    <div className="input-group-append">
-                                                        <button className="btn btn-outline-secondary" type="button">Order</button>
-                                                    </div>
+                                                <div className="input-group d-flex justify-content-between">
+                                                    <ButtonGroup aria-label="Basic example" className="my-2">
+                                                        <Button variant="danger" disabled={!dish} onClick={()=>decreaseDishAmount()}>-</Button>
+                                                        <Button variant="outline-secondary" disabled>{dish}</Button>
+                                                        <Button variant="success" onClick={()=>increaseDishAmount()}>+</Button>
+                                                    </ButtonGroup>
+                                                    <Button variant="outline-success" className="my-2">Order</Button>
                                                 </div>
                                             </Col>
                                         </Row>
