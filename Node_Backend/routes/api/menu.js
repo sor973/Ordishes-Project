@@ -7,15 +7,16 @@ const dbName = 'development';
 
 
 router.get('/', async function(req, res, next) {
-
+  
+    // const menulist = [];
     const client = new MongoClient(url);
     await client.connect();
     const db = client.db(dbName);
-    const collection = db.collection('development_stage');
+    const collection = db.collection('ordishes_menu');
     const findmenu = await collection.find({datatype:20}).toArray();
-    console.log('Found documents =>', findmenu[0]);
-    res.send(findmenu[0].menu);
-    
+    // menulist.push(findmenu)
+    res.send(findmenu[0]);
+
   });
   
 module.exports = router;

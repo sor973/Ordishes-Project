@@ -44,25 +44,27 @@ router.all('/', async function(req, res, next) {
       })
       return 
     }
-    if(resp.datatype == 3){
-      //request status
-      var list = [];
-      const findstatus = await collection.find({datatype:4,token:resp.token}).toArray();
-      for (let i = 0; i < (findstatus.length); i++){
-        list.push(findstatus[i].menu[0]);
-      }
-      console.log(list)
-      return res.send(list)
-    }
+    // if(resp.datatype == 3){
+    //   //request status
+    //   var list = [];
+    //   const findstatus = await collection.find({datatype:4,token:resp.token}).toArray();
+    //   // for (let i = 0; i < (findstatus.length); i++){
+    //   //   list.push(findstatus[i].menu[0]);
+    //   // }
+    //   // console.log(list)
+    //   return res.send(findstatus[0])
+    // }
     if(resp.datatype == 6){
       // list of order 
       var list = [];
-      const findorder = await collection.find({token:resp.token}).toArray();
+      const findorder = await collection.find({datatype:2,token:resp.token}).toArray();
       for (let i = 0; i < (findorder.length); i++){
         list.push(findorder[i].menu);
+        console.log(findorder[i].menu);
       }
-      console.log(list)
-      return res.send(list)
+      const listorder = {"listorder": list} ;
+      // console.log(list)
+      return res.send(listorder)
     }
   });
   
