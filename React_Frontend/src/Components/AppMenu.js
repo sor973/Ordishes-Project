@@ -3,6 +3,8 @@ import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Row, Col, Card, Button, Form, ButtonGroup} from 'react-bootstrap'
 import menus from './data/menus';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus, faMinus, faUtensils } from '@fortawesome/free-solid-svg-icons'
 
 
 function AppMenu({menuindex, Order}) {
@@ -55,11 +57,11 @@ function AppMenu({menuindex, Order}) {
                                             <Col>
                                                 <div className="input-group d-flex justify-content-between">
                                                     <ButtonGroup aria-label="Basic example" className="my-2">
-                                                        <Button variant="danger" disabled={!dish} onClick={()=>decreaseDishAmount()}>-</Button>
-                                                        <Button variant="outline-secondary" disabled>{dish}</Button>
-                                                        <Button variant="success" disabled={maxDishStatus} onClick={()=>increaseDishAmount()}>+</Button>
+                                                        <Button variant="danger" disabled={!dish} onClick={()=>decreaseDishAmount()}><FontAwesomeIcon icon={faMinus} /></Button>
+                                                        <Button variant="outline-light" className="text-dark" disabled><strong>{dish}</strong></Button>
+                                                        <Button variant="success" disabled={maxDishStatus} onClick={()=>increaseDishAmount()}><FontAwesomeIcon icon={faPlus} /></Button>
                                                     </ButtonGroup>
-                                                    <Button variant="outline-success" disabled={!dish} onClick={()=>startOrder()} className="my-2">Order</Button>
+                                                    <Button variant="outline-success" disabled={!dish} onClick={()=>startOrder()} className="my-2">Order <FontAwesomeIcon icon={faUtensils} /></Button>
                                                 </div>
                                             </Col>
                                         </Row>
