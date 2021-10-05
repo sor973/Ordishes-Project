@@ -46,6 +46,7 @@ LIST OF NODE_MODULES
 - react
 - qrcode
 - react-router-dom
+- react-uuid
 ----------------------------------------
 
 You can istall NODE_MODULES BY usig this command  **ps.cd to frontend folder first** \
