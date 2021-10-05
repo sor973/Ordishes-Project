@@ -5,8 +5,8 @@ import { Row, Col, Card, Button, Form, ButtonGroup} from 'react-bootstrap'
 import menus from './data/menus';
 
 
-function AppMenu({menuid, Order}) {
-    var menuindex = (menuid||1) - 1;
+function AppMenu({menuindex, Order}) {
+    let menuid = menuindex + 1;
     var menu = menus[menuindex]
     const maxDishAmount = 10;
     const [dish, updateDish] = useState(0);
@@ -29,7 +29,7 @@ function AppMenu({menuid, Order}) {
     }
 
     function startOrder(){
-        Order.addOrder(menuid+1, dish);
+        Order.addOrder(menuid, dish);
         updateDish(0);
     }
 

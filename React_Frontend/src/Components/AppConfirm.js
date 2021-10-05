@@ -70,7 +70,7 @@ function AppConfirm({Order}) {
         <Container >
             <Row className="mt-3">
                 <Col>
-                    <Table responsive="sm" size="sm" > 
+                    <Table striped responsive="sm" size="sm" > 
                         <thead>
                             <tr>
                                 <th>Name</th>

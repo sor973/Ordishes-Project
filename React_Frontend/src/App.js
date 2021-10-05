@@ -21,7 +21,7 @@ function App() {
     var menuArray = [];
     function loopThroughMenu() {
         for (let ind = 0; ind < menus.length; ind++) {
-            menuArray.push(<AppMenu key={uuid()} menuid={ind} Order={Order} />);
+            menuArray.push(<AppMenu key={uuid()} menuindex={ind} Order={Order} />);
         }
     }
     loopThroughMenu();
