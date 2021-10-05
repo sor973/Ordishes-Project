@@ -1,51 +1,71 @@
 import React from 'react'
-import { Container, Row, Col, Table, CloseButton, Button } from 'react-bootstrap'
-import UserOrder from './data/userOrder';
+import { Container, Row, Col, Table, Button, Alert } from 'react-bootstrap'
+import menus from './data/menus';
+import uuid from 'react-uuid';
+import { useState } from 'react';
+// import UserOrder from './data/userOrder';
 
-function AppConfirm() {
-
-    function randomnum() {
-        return Math.floor(Math.random() * 50);
-    }
-    function cancelButton(){
-        if(randomnum() >= 25){
-            return(<Button variant="danger" size="sm">Cancel</Button>)
-        }
-        return (<Button variant="danger" size="sm" disabled>Cancel</Button>);
-    }
-    var TotalPrice = 0;
-    var tableArray = [];
+function AppConfirm({Order}) {
+    const [orderArray, setOrderArray] = useState(loopThroughMenu());
+    const [alertArray, setAlertArray] = useState([]);
     function loopThroughMenu(){
-        let UserOrderKey = Object.keys(UserOrder);
-        UserOrderKey.map(predata => {
-            let data = UserOrder[predata];
-            TotalPrice+=data.sumPrice;
-            tableArray.push(<tr>
+        var TotalPrice = 0;
+        var tableArray = [];
+        let UserOrderKey = Object.keys(Order.order);
+        UserOrderKey.map(orderid => {
+            let orderdata = Order.order[orderid]
+            let menudata = menus[orderdata["menuid"]-1];
+            TotalPrice+=orderdata.quantity*menudata.price;
+            return tableArray.push(<tr key={uuid()}>
                 <td>
-                    {data.menuName}
+                    {menudata.title}
                 </td>
                 <td>
-                    {data.amount}
+                    {orderdata.quantity}
                 </td>
                 <td>
-                    {data.pricePerDish}$
+                    {menudata.price}$
                 </td>
                 <td>
-                    {data.sumPrice}$
+                    {orderdata.quantity*menudata.price}$
                 </td>
                 <td>
                     <div className="d-flex justify-content-center">
-                        {cancelButton()}
+                        <Button variant="danger" onClick={()=>{Order.delOrder(orderid);updateOrderArray();}} size="sm">Cancel</Button>
                     </div>
                 </td>
             </tr>);
         });
-        tableArray.push(<tr>
+        tableArray.push(<tr key={uuid()}>
             <td colSpan="3">Total Price</td>
-            <td colSpan="2">{TotalPrice}$</td>
+            <td>{TotalPrice}$</td>
+            <td><div className="d-flex justify-content-center"><Button disabled={!Object.keys(Order.order).length} onClick={cancelAllOrder} size="sm" variant="danger">Cancel All</Button></div></td>
         </tr>);
+        return tableArray;
     }
-    loopThroughMenu();
+    function updateOrderArray(){
+        setOrderArray(loopThroughMenu());
+    }
+    function cancelAllOrder(){
+        Order.order = {};
+        Order.clearOrder();
+        setOrderArray(loopThroughMenu());
+        setAlertArray([
+            <Alert variant="info" key={uuid()}>
+                All orders have been canceled!
+            </Alert>
+        ]);
+    }
+    function submitOrder(){
+        Order.order = {};
+        Order.clearOrder();
+        setOrderArray(loopThroughMenu());
+        setAlertArray([
+            <Alert variant="success" key={uuid()}>
+                All orders have been sent to the kitchen!
+            </Alert>
+        ]);
+    }
     return (
         <Container >
             <Row className="mt-3">
@@ -57,18 +77,23 @@ function AppConfirm() {
                                 <th>Qty</th>
                                 <th>Price</th>
                                 <th>Total</th>
-                                <th>Cancel</th>
+                                <th className="text-center">Cancel</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {tableArray}
+                            {orderArray}
                         </tbody>
                     </Table>
                 </Col>
             </Row>
             <Row>
                 <Col className="d-flex justify-content-center">
-                    <Button>Submit</Button>
+                    <Button disabled={!Object.keys(Order.order).length} onClick={submitOrder}>Submit</Button>
+                </Col>
+            </Row>
+            <Row>
+                <Col className="d-flex justify-content-center mt-3">
+                    {alertArray}
                 </Col>
             </Row>
         </Container>

@@ -5,7 +5,7 @@ import { Row, Col, Card, Button, Form, ButtonGroup} from 'react-bootstrap'
 import menus from './data/menus';
 
 
-function AppMenu({menuid}) {
+function AppMenu({menuid, Order}) {
     var menuindex = (menuid||1) - 1;
     var menu = menus[menuindex]
     const maxDishAmount = 10;
@@ -26,6 +26,11 @@ function AppMenu({menuid}) {
             if(currentDishAmount+1 >= maxDishAmount) updateMaxDishStatus(true);
             updateDish(currentDishAmount+1);
         }
+    }
+
+    function startOrder(){
+        Order.addOrder(menuid+1, dish);
+        updateDish(0);
     }
 
     return (
@@ -54,7 +59,7 @@ function AppMenu({menuid}) {
                                                         <Button variant="outline-secondary" disabled>{dish}</Button>
                                                         <Button variant="success" disabled={maxDishStatus} onClick={()=>increaseDishAmount()}>+</Button>
                                                     </ButtonGroup>
-                                                    <Button variant="outline-success" disabled={!dish} className="my-2">Order</Button>
+                                                    <Button variant="outline-success" disabled={!dish} onClick={()=>startOrder()} className="my-2">Order</Button>
                                                 </div>
                                             </Col>
                                         </Row>
