@@ -3,7 +3,8 @@ import { Container, Row, Col, Table, Button, Alert } from 'react-bootstrap'
 import menus from './data/menus';
 import uuid from 'react-uuid';
 import { useState } from 'react';
-// import UserOrder from './data/userOrder';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes, faTrashAlt, faUtensils } from '@fortawesome/free-solid-svg-icons'
 
 function AppConfirm({Order}) {
     const [orderArray, setOrderArray] = useState(loopThroughMenu());
@@ -31,15 +32,15 @@ function AppConfirm({Order}) {
                 </td>
                 <td>
                     <div className="d-flex justify-content-center">
-                        <Button variant="danger" onClick={()=>{Order.delOrder(orderid);updateOrderArray();}} size="sm">Cancel</Button>
+                        <FontAwesomeIcon className="text-danger" icon={faTimes} onClick={()=>{Order.delOrder(orderid);updateOrderArray();}} size="lg"/>
                     </div>
                 </td>
             </tr>);
         });
         tableArray.push(<tr key={uuid()}>
-            <td colSpan="3">Total Price</td>
-            <td>{TotalPrice}$</td>
-            <td><div className="d-flex justify-content-center"><Button disabled={!Object.keys(Order.order).length} onClick={cancelAllOrder} size="sm" variant="danger">Cancel All</Button></div></td>
+            <td colSpan="3"><strong>Total Price</strong></td>
+            <td><strong>{TotalPrice}$</strong></td>
+            <td><div className="d-flex justify-content-center"><Button disabled={!Object.keys(Order.order).length} onClick={cancelAllOrder} size="sm" variant="outline-danger">Cancel All <FontAwesomeIcon icon={faTrashAlt} /></Button></div></td>
         </tr>);
         return tableArray;
     }
@@ -88,7 +89,7 @@ function AppConfirm({Order}) {
             </Row>
             <Row>
                 <Col className="d-flex justify-content-center">
-                    <Button disabled={!Object.keys(Order.order).length} onClick={submitOrder}>Submit</Button>
+                    <Button variant="success" disabled={!Object.keys(Order.order).length} onClick={submitOrder}>Submit Order <FontAwesomeIcon icon={faUtensils} /></Button>
                 </Col>
             </Row>
             <Row>
