@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Container, Row } from 'react-bootstrap';
+import uuid from 'react-uuid'
 import './App.css';
 import menus from './Components/data/menus';
 
@@ -13,13 +14,14 @@ import AppTokenLogin from './Components/AppTokenLogin';
 import AppNavbarCashier from './Components/AppNavbarCashier';
 import AppCashier from './Components/AppCashier';
 import AppQRCodeGen from './Components/AppQRCodeGen';
+import { Order } from './functions/OrderOperation';
 
 
 function App() {
     var menuArray = [];
     function loopThroughMenu() {
         for (let ind = 0; ind < menus.length; ind++) {
-            menuArray.push(<AppMenu menuid={ind} />);
+            menuArray.push(<AppMenu key={uuid()} menuid={ind} Order={Order} />);
         }
     }
     loopThroughMenu();
@@ -40,7 +42,7 @@ function App() {
 
                 <Route exact path='/confirm'>
                     <AppNavbar />
-                    <AppConfirm />
+                    <AppConfirm Order={Order} />
                 </Route>
 
                 <Route exact path='/checkbill'>
