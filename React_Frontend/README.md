@@ -47,6 +47,9 @@ LIST OF NODE_MODULES
 - qrcode
 - react-router-dom
 - react-uuid
+- @fortawesome/react-fontawesome
+- @fortawesome/fontawesome-svg-core
+- @fortawesome/free-solid-svg-icons
 ----------------------------------------
 
 You can istall NODE_MODULES BY usig this command  **ps.cd to frontend folder first** \
