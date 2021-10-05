@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Row, Col, Table, Button, Alert } from 'react-bootstrap'
+import { Container, Row, Col, Table, Button, Alert, Card } from 'react-bootstrap'
 import menus from './data/menus';
 import uuid from 'react-uuid';
 import { useState } from 'react';
@@ -68,35 +68,40 @@ function AppConfirm({Order}) {
         ]);
     }
     return (
+
         <Container >
-            <Row className="mt-3">
-                <Col>
-                    <Table striped responsive="sm" size="sm" > 
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Qty</th>
-                                <th>Price</th>
-                                <th>Total</th>
-                                <th className="text-center">Cancel</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {orderArray}
-                        </tbody>
-                    </Table>
-                </Col>
-            </Row>
-            <Row>
-                <Col className="d-flex justify-content-center">
-                    <Button variant="success" disabled={!Object.keys(Order.order).length} onClick={submitOrder}>Submit Order <FontAwesomeIcon icon={faUtensils} /></Button>
-                </Col>
-            </Row>
-            <Row>
-                <Col className="d-flex justify-content-center mt-3">
-                    {alertArray}
-                </Col>
-            </Row>
+            <Card className="mt-3 shadow p-3 mb-5 bg-white rounded">
+                <Row>
+                    <Col>
+                        <Table striped responsive="sm" size="sm" >
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Qty</th>
+                                    <th>Price</th>
+                                    <th>Total</th>
+                                    <th className="text-center">Cancel</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {orderArray}
+                            </tbody>
+                        </Table>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col className="d-flex justify-content-center">
+                        <Button variant="success" disabled={!Object.keys(Order.order).length} onClick={submitOrder}>Submit Order <FontAwesomeIcon icon={faUtensils} /></Button>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col className="d-flex justify-content-center mt-3">
+                        {alertArray}
+                    </Col>
+                </Row>
+            </Card>
+
+
         </Container>
     )
 }
