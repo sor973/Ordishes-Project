@@ -39,7 +39,7 @@ function AppMenu({menuindex, Order}) {
         <Col sm="12" lg="4">
             <Row>
                 <Col md>
-                    <Card className="mb-3">
+                    <Card className="mb-3 shadow p-3 mb-5 bg-white rounded">
                         <Card.Img variant="top" src={menu.thumbnailUrl} className="card-img-top" />
                         <Card.Body>
                             <Card.Title>
