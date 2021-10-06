@@ -5,17 +5,20 @@ import uuid from 'react-uuid';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes, faTrashAlt, faUtensils } from '@fortawesome/free-solid-svg-icons'
+import axios from 'axios';
 
 function AppConfirm({Order}) {
     const [orderArray, setOrderArray] = useState(loopThroughMenu());
     const [alertArray, setAlertArray] = useState([]);
     function loopThroughMenu(){
+        var MenuObjectString = localStorage.getItem("menu");
+        var MenuObject = JSON.parse(MenuObjectString);
         var TotalPrice = 0;
         var tableArray = [];
         let UserOrderKey = Object.keys(Order.order);
         UserOrderKey.map(orderid => {
             let orderdata = Order.order[orderid]
-            let menudata = menus[orderdata["menuid"]-1];
+            let menudata = MenuObject[orderdata["menuid"]-1];
             TotalPrice+=orderdata.quantity*menudata.price;
             return tableArray.push(<tr key={uuid()}>
                 <td>
@@ -56,16 +59,30 @@ function AppConfirm({Order}) {
                 All orders have been canceled!
             </Alert>
         ]);
+        console.log(orderArray)
     }
-    function submitOrder(){
-        Order.order = {};
-        Order.clearOrder();
-        setOrderArray(loopThroughMenu());
-        setAlertArray([
-            <Alert variant="success" key={uuid()}>
-                All orders have been sent to the kitchen!
-            </Alert>
-        ]);
+    async function submitOrder(){
+        const Customerorder = {
+            "datatype" : 2,
+            "menu" : Order.order,
+            "token":"12345",
+            "orderid": uuid()
+        }
+        await axios.post("http://localhost:8000/api/order", {
+            Customerorder
+        }).then((response) => {
+            Order.order = {};
+            Order.clearOrder();
+            setOrderArray(loopThroughMenu());
+            setAlertArray([
+                <Alert variant="success" key={uuid()}>
+                    All orders have been sent to the kitchen!
+                </Alert>
+            ]);
+            console.log(response.data);
+        }).catch((err) => {
+            console.log(err)
+        })
     }
     return (
 

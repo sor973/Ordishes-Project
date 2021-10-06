@@ -21,10 +21,10 @@ router.all('/', async function(req, res, next) {
     const db = client.db(dbName);
     const collection = db.collection('development_stage');
 
-    var resp = req.body;
+    var resp = req.body.Customerorder;
     console.log(resp);
 
-    if(resp.datatype == 2 || resp.datatype == 5 ){
+    if(resp.datatype == 2 ){
       const findResult = await collection.find({orderid:resp.orderid}).toArray();
   
       if (!_.isEmpty(findResult)) {
@@ -42,7 +42,8 @@ router.all('/', async function(req, res, next) {
         console.log(message.toString())
         client.end()
       })
-      return 
+      
+      return res.send("Order Assign")
     }
     // if(resp.datatype == 3){
     //   //request status

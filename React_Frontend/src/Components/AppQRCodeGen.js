@@ -25,13 +25,11 @@ function AppQRCodeGen() {
             setError(null)
             setShow(false)
             console.log(response.data);
-
         }).catch(e => {
             setError(e.response.data);
             setShow(true)
             console.log(e.response.data)
         })
-
     }
 
     function qr(e) {
