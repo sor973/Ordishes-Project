@@ -2,14 +2,14 @@ import React from 'react'
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Row, Col, Card, Button, Form, ButtonGroup} from 'react-bootstrap'
-import menus from './data/menus';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus, faUtensils } from '@fortawesome/free-solid-svg-icons'
 
-
 function AppMenu({menuindex, Order}) {
+    let MenuObjectString = localStorage.getItem("menu");
+    let MenuObject = JSON.parse(MenuObjectString);
     let menuid = menuindex + 1;
-    var menu = menus[menuindex]
+    var menu = MenuObject[menuindex]
     const maxDishAmount = 10;
     const [dish, updateDish] = useState(0);
     const [maxDishStatus, updateMaxDishStatus] = useState(false);

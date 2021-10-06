@@ -1,9 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useState , useEffect } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Container, Row } from 'react-bootstrap';
 import uuid from 'react-uuid'
 import './App.css';
-import menus from './Components/data/menus';
 
 import AppNavbar from './Components/AppNavbar';
 import AppMenu from './Components/AppMenu';
@@ -15,16 +15,32 @@ import AppNavbarCashier from './Components/AppNavbarCashier';
 import AppCashier from './Components/AppCashier';
 import AppQRCodeGen from './Components/AppQRCodeGen';
 import { Order } from './functions/OrderOperation';
-
+import listofmenu from './functions/getMenu'
 
 function App() {
+
+    useEffect(() => {
+        async function runapp() {
+            await loopThroughMenu();
+            setArray(menuArray);
+        }
+        runapp()
+    }, []);
+    
+    const [menuArray2,setArray] = useState([]);
+
     var menuArray = [];
-    function loopThroughMenu() {
-        for (let ind = 0; ind < menus.length; ind++) {
+
+    async function loopThroughMenu() {
+        await listofmenu();   
+        let MenuObjectString = localStorage.getItem("menu");
+        let MenuObject = JSON.parse(MenuObjectString);
+        for (let ind = 0; ind < MenuObject.length; ind++) {
             menuArray.push(<AppMenu key={uuid()} menuindex={ind} Order={Order} />);
+         
         }
     }
-    loopThroughMenu();
+
     return (
         <Router>
             <Switch>
@@ -35,7 +51,7 @@ function App() {
                     <AppNavbar />
                     <Container>
                         <Row className="d-flex justify-content-center mt-3">
-                            {menuArray}
+                            {menuArray2}
                         </Row>
                     </Container>
                 </Route>
