@@ -1,4 +1,4 @@
-# Ordishes Project - C Backend
+# Ordishes Project - C Backend first_week
 ### main in work
 - publish data.JSON from MQTT
 - tranform data.JSON to data.BSON/BCON
@@ -77,3 +77,48 @@ int main (int argc, char *argv[])
 }
 
 ```
+-------------------------------------
+# Ordishes Project - C Backend second_week
+### main in work
+- publish data.JSON from MQTT
+- tranform data.JSON to data.BSON/BCON
+- sent data.BSON/BCON to MongoDB
+
+## Progress of C Backend
+in second week C Backend
+- MQTT
+    - [x] test publish datajson.string. 
+    - [x] test submit datajson.string. 
+-------------------------------------
+- MongoDB for database
+    - [x] get string from MQTT_publish. 
+    - [x] edit datajson.string to data.BSON/BCON.
+    - [x] insert data in MongoDB.
+-------------------------------------
+- MongoDB for help kitchen
+    - [x] edit datajson.string to data.BSON/BCON.
+    - [X] lookfor data in MongoDB.
+    - [X] update data in MongoDB.
+    - [X] count data in MongoDB.
+    - [X] count data in MongoDB.
+-------------------------------------
+## flow for second week.
+```mermaid
+graph TD
+    A[c-backend_secondweek] --> B(MQTT)  
+    B --> |get datajson.string| a[is order?] 
+    a --> |yes| b[count by token]
+    b --> |get number order| e[edit data add number order]
+    e --> |send datajson.string| D[insert data in MongoDB]
+    e --> |now data is json_obj| f[parse data]
+    f --> |get token| j[inttoken] --> c[show list order to chef will see]
+    f --> |get order| i[int order] --> c
+    f --> |get list order| k[char list order] -->c
+    c --> d[GTK Dynamic List view] 
+    d --> |select list| m[get string parse string for what token & order]
+    m --> |when chef finish order| E[Finish]
+    m --> |when chef cancel order| F[Cancel]
+    E -->|status : finish| K[update : dataBSON by token & order]
+    F -->|status : cancel| K -->  I[update data in MongoDB]
+```
+

@@ -1,9 +1,9 @@
 
 import React from 'react'
 import moment from 'moment';
-import { Container, Row, Col, Table, Card } from 'react-bootstrap';
+import { Container, Row, Col, Table, Card, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUtensils } from '@fortawesome/free-solid-svg-icons'
+import { faUtensils, faMoneyCheckAlt } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios';
 
 function AppCheckbill() {
@@ -108,6 +108,11 @@ function AppCheckbill() {
                 </Row>
                 <Row>
                     <Col className="d-flex justify-content-center"><h6>Thank You </h6></Col>
+                </Row>
+                <Row>
+                    <Col className="d-flex justify-content-center">
+                        <Button variant="outline-success">Check bill <FontAwesomeIcon icon={faMoneyCheckAlt} /></Button>
+                    </Col>
                 </Row>
             </Card>
         </Container>
