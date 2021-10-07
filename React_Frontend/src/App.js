@@ -25,7 +25,7 @@ function App() {
             setArray(menuArray);
         }
         runapp()
-    }, []);
+    }, []);// eslint-disable-line react-hooks/exhaustive-deps
     
     const [menuArray2,setArray] = useState([]);
 
@@ -37,7 +37,6 @@ function App() {
         let MenuObject = JSON.parse(MenuObjectString);
         for (let ind = 0; ind < MenuObject.length; ind++) {
             menuArray.push(<AppMenu key={uuid()} menuindex={ind} Order={Order} />);
-         
         }
     }
 
