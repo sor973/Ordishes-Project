@@ -35,7 +35,7 @@ function AppConfirm({Order}) {
                 </td>
                 <td>
                     <div className="d-flex justify-content-center">
-                        <FontAwesomeIcon className="text-danger" icon={faTimes} onClick={()=>{Order.delOrder(orderid);updateOrderArray();}} size="lg"/>
+                        <FontAwesomeIcon className="text-danger" icon={faTimes} onClick={()=>{Order.delOrder(orderid);updateOrderArray();}} size="lg" style={{"cursor": "pointer"}}/>
                     </div>
                 </td>
             </tr>);
