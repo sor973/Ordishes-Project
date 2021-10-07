@@ -12,7 +12,7 @@ function AppNavbar() {
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="ml-auto">
                     <Nav.Link href="/menu">Menu</Nav.Link>
-                    <Nav.Link href="/confirm">Confirm order</Nav.Link>
+                    <Nav.Link href="/confirm">Order</Nav.Link>
                     <Nav.Link href="/checkbill">Check bill</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
