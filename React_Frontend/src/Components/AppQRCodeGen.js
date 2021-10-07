@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Form, Button, Image, Alert, Figure } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Image, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import QRcode from 'qrcode';
+import { axiosConfiguration } from '../variable/axios';
 
 function AppQRCodeGen() {
 
@@ -17,8 +18,7 @@ function AppQRCodeGen() {
         const Table = {
             "table": x
         }
-
-        await axios.post("http://localhost:8000/api/url", {
+        await axios.post(`${axiosConfiguration.url}/api/url`, {
             Table
         }).then((response) => {
             setURL(response.data);

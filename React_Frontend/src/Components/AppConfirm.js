@@ -1,11 +1,11 @@
 import React from 'react'
-import { Container, Row, Col, Table, Button, Alert, Card } from 'react-bootstrap'
-import menus from './data/menus';
+import { Container, Row, Col, Table, Button, Alert, Card } from 'react-bootstrap';
 import uuid from 'react-uuid';
 import { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTimes, faTrashAlt, faUtensils } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes, faTrashAlt, faUtensils } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import { axiosConfiguration } from '../variable/axios';
 
 function AppConfirm({Order}) {
     const [orderArray, setOrderArray] = useState(loopThroughMenu());
@@ -68,7 +68,7 @@ function AppConfirm({Order}) {
             "token":"12345",
             "orderid": uuid()
         }
-        await axios.post("http://localhost:8000/api/order", {
+        await axios.post(`${axiosConfiguration.url}/api/order`, {
             Customerorder
         }).then((response) => {
             Order.order = {};
