@@ -13,6 +13,11 @@ For the Back-End Customer side, we will use node.js to connect Front-End and Dat
     3. Process The data and send it via MQTT in this form {datatype:1, table:85, token:"123456"}
     4. Send URL with the token back to The Front-End like this “https://www.ordishes.com/?token=as#pf” 
 
+- Orders
+
+    1. recieve order and send to mqtt
+    2. send list of Customer all order to FrontEnd
+
 ---------------------------------
 **TASK LIST**
 
@@ -21,11 +26,11 @@ For the Back-End Customer side, we will use node.js to connect Front-End and Dat
     - [x] generate token
     - [x] send data to MQTT
     - [x] send url API
-- [ ]  Orders
-    - [x] recieve order 
-    - [x] request status 
-    - [x] cancel order 
+- [X] Orders
+    - [x] recieve order
     - [x] list of order
+- [x] send List of Menu to FrontEnd
+- [x] Connect to MongoDB to read data
 
 - [ ]  Kitchen
 
@@ -39,7 +44,8 @@ LIST OF NODE_MODULES
 - generate-password
 - express
 - cors
-
+- lodash
+- mongodb
 ----------------------------------------
 
 You can istall NODE_MODULES BY usig this command **PS. cd to BackEnd folder first** \

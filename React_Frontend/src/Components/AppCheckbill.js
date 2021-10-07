@@ -4,8 +4,33 @@ import moment from 'moment';
 import { Container, Row, Col, Table, Card } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUtensils } from '@fortawesome/free-solid-svg-icons'
+import axios from 'axios';
 
 function AppCheckbill() {
+    /*
+    var listorder = [];
+    var tokenObject = localStorage.getItem("token");
+    async function listoforder() {
+        const Customerorder = {
+            "datatype" : 6,
+            "status" : "client",
+            "token" : tokenObject
+        };
+        await axios.post("http://localhost:8000/api/order", {
+            Customerorder
+        }).then((response) => {
+            listorder = response.data;
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+    listoforder();
+
+    async function checkbill() {
+
+        
+    }
+    */
     return (
         <Container>
             <Card className="mt-3 shadow p-3 mb-5 bg-white rounded">
