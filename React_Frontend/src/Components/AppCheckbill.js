@@ -12,6 +12,8 @@ function AppCheckbill() {
     
     var list_CustomerOrder = [];
     const [orderArray, setOrderArray] = useState([]);
+    var tokenObject = localStorage.getItem("token");
+
     useEffect(() => {
         async function checkbill() {
             await listoforder()
@@ -20,7 +22,6 @@ function AppCheckbill() {
         checkbill()
     }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
-    var tokenObject = localStorage.getItem("token");
     async function listoforder() {
         const Customerorder = {
             "datatype": 6,
@@ -36,7 +37,6 @@ function AppCheckbill() {
             console.log(err)
         })
     }
-
 
     function loopThroughMenu() {
         var MenuObjectString = localStorage.getItem("menu");
@@ -64,15 +64,15 @@ function AppCheckbill() {
             </tr>);
         });
         tableArray.push(<tr key={uuid()}>
-            <td colSpan="3"><strong>Subtotal</strong></td>
+            <td colSpan="3"><strong>Subtotal</strong> :</td>
             <td><strong>{TotalPrice}$</strong></td>
         </tr>);
         tableArray.push(<tr key={uuid()}>
-            <td colSpan="3">Net Total</td>
+            <td colSpan="3">Net Total :</td>
             <td>{TotalPrice-(TotalPrice*7/100)}$</td>
         </tr>);
         tableArray.push(<tr key={uuid()}>
-            <td colSpan="3">Tax 7%</td>
+            <td colSpan="3">Tax 7% :</td>
             <td>{TotalPrice*7/100}$</td>
         </tr>);
         return tableArray;
@@ -84,11 +84,12 @@ function AppCheckbill() {
             "token": "12345",
             "allmenu": list_CustomerOrder
         }
-        await axios.post(`${axiosConfiguration.url}/cashier`, {
+        await axios.post(`${axiosConfiguration.url}/api/checkout`, {
             Checkout
         }).catch((err) => {
             console.log(err)
         })
+        console.log("send");
     }
 
     return (
@@ -101,17 +102,17 @@ function AppCheckbill() {
                     <Col className="d-flex justify-content-center"><p>1518 Pracharat 1 Road,Wongsawang,<br /> Bangsue, Bangkok 10800 Thailand.</p></Col>
                 </Row>
                 <Row>
-                    <Col className="d-flex justify-content-center"><p>Tel: 000-000-0000</p></Col>
+                    <Col className="d-flex justify-content-center"><p>Tel : 000-000-0000</p></Col>
                 </Row>
                 <Row>
-                    <Col className="d-flex justify-content-center"><p>Email: ordishes@test.com</p></Col>
+                    <Col className="d-flex justify-content-center"><p>Email : ordishes@test.com</p></Col>
                 </Row>
                 <Row>
                     <Col className="d-flex justify-content-center">
-                        <p>Date: {moment().format('DD/MM/YYYY')}</p>
+                        <p>Date : {moment().format('DD/MM/YYYY')}</p>
                     </Col>
                     <Col className="d-flex justify-content-center">
-                        <p>Time: {moment().format('HH:mm')}</p>
+                        <p>Time : {moment().format('HH:mm')}</p>
                     </Col>
                 </Row>
                 <Row>
@@ -136,7 +137,7 @@ function AppCheckbill() {
                 </Row>
                 <Row>
                     <Col className="d-flex justify-content-center">
-                        <Button variant="outline-success" >Check bill <FontAwesomeIcon icon={faMoneyCheckAlt} /></Button>
+                        <Button variant="outline-success" onClick = { checkbill } >Check bill <FontAwesomeIcon icon={faMoneyCheckAlt} /></Button>
                     </Col>
                 </Row>
             </Card>

@@ -43,8 +43,11 @@ function AppConfirm({Order}) {
         tableArray.push(<tr key={uuid()}>
             <td colSpan="3"><strong>Total Price</strong></td>
             <td><strong>{TotalPrice}$</strong></td>
-            <td><div className="d-flex justify-content-center"><Button disabled={!Object.keys(Order.order).length} onClick={cancelAllOrder} size="sm" variant="outline-danger">Cancel All <FontAwesomeIcon icon={faTrashAlt} /></Button></div></td>
+            <td>
+                <div className="d-flex justify-content-center"><Button disabled={!Object.keys(Order.order).length} onClick={cancelAllOrder} size="sm" variant="outline-danger">Cancel All <FontAwesomeIcon icon={faTrashAlt} /></Button></div>
+            </td>
         </tr>);
+
         return tableArray;
     }
     function updateOrderArray(){
@@ -64,9 +67,10 @@ function AppConfirm({Order}) {
     async function submitOrder(){
         const Customerorder = {
             "datatype" : 2,
-            "menu" : Order.order,
+            "table" : 15,
             "token":"12345",
-            "orderid": uuid()
+            "menu" : Order.order,
+            "status" : "letcook"
         }
         await axios.post(`${axiosConfiguration.url}/api/order`, {
             Customerorder
