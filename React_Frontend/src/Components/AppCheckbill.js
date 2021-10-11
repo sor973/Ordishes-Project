@@ -64,8 +64,16 @@ function AppCheckbill() {
             </tr>);
         });
         tableArray.push(<tr key={uuid()}>
-            <td colSpan="3"><strong>Total Price</strong></td>
+            <td colSpan="3"><strong>Subtotal</strong></td>
             <td><strong>{TotalPrice}$</strong></td>
+        </tr>);
+        tableArray.push(<tr key={uuid()}>
+            <td colSpan="3">Net Total</td>
+            <td>{TotalPrice-(TotalPrice*7/100)}$</td>
+        </tr>);
+        tableArray.push(<tr key={uuid()}>
+            <td colSpan="3">Tax 7%</td>
+            <td>{TotalPrice*7/100}$</td>
         </tr>);
         return tableArray;
     }
