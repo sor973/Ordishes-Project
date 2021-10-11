@@ -73,10 +73,10 @@ function AppCashier() {
                     </Row>
                     <Row>
                         <Col className="d-flex justify-content-center">
-                            <Button variant="danger">deny</Button>
+                            <Button variant="danger">Deny</Button>
                         </Col>
                         <Col className="d-flex justify-content-center">
-                            <Button variant="success" onClick={handleShow}>confirm</Button>
+                            <Button variant="success" onClick={handleShow}>Confirm</Button>
                             <Modal
                                 show={show}
                                 onHide={handleClose}
