@@ -24,12 +24,7 @@ router.all('/', async function(req, res, next) {
     var resp = req.body.Customerorder;
     console.log(resp);
 
-    if(resp.datatype == 2 ){
-      const findResult = await collection.find({orderid:resp.orderid}).toArray();
-  
-      if (!_.isEmpty(findResult)) {
-        return res.status(400).send("This order is already assign");
-      }
+    if(resp.datatype == 2 ) {
       const data = resp
       const jsonStr = JSON.stringify(data);
       const client = mqtt.connect("mqtt://192.168.42.201:1884",option);
@@ -45,27 +40,22 @@ router.all('/', async function(req, res, next) {
       
       return res.send("Order Assign")
     }
-    // if(resp.datatype == 3){
-    //   //request status
-    //   var list = [];
-    //   const findstatus = await collection.find({datatype:4,token:resp.token}).toArray();
-    //   // for (let i = 0; i < (findstatus.length); i++){
-    //   //   list.push(findstatus[i].menu[0]);
-    //   // }
-    //   // console.log(list)
-    //   return res.send(findstatus[0])
-    // }
-    if(resp.datatype == 6){
-      // list of order 
+    if(resp.datatype == 3){
       var list = [];
-      const findorder = await collection.find({datatype:2,token:resp.token}).toArray();
-      for (let i = 0; i < (findorder.length); i++){
-        list.push(findorder[i].menu);
-        console.log(findorder[i].menu);
+      const findstatus = await collection.find({datatype:4,token:resp.token}).toArray();
+      for (let i = 0; i < (findstatus.length); i++){
+        list.push(findstatus[i].menu[0]);
       }
-      const listorder = {"listorder": list} ;
-      // console.log(list)
-      return res.send(listorder)
+      console.log(list)
+      return res.send(findstatus[0])
+    }
+    if(resp.datatype == 6){
+      var list = {};
+      const findorder = await collection.find({datatype:2,token:resp.token}).toArray();
+      for (let i = 0; i < (findorder.length); i++) {
+        list = Object.assign({}, list, findorder[i].menu);
+      }
+      return res.send(list)
     }
   });
   
