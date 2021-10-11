@@ -6,14 +6,9 @@ import { faCashRegister } from '@fortawesome/free-solid-svg-icons'
 
 
 function AppCashier() {
-<<<<<<< HEAD
-    
-=======
     const [show, setShow] = useState(false);
-
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
->>>>>>> 4fdc975c12d9f72629bb56cb5840bbc43b96aa07
     return (
         <Container>
             <Card className="mt-3 shadow p-3 mb-5 bg-white rounded">
