@@ -1,5 +1,5 @@
 
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react'
 import uuid from 'react-uuid';
 import moment from 'moment';
 import { Container, Row, Col, Table, Card, Button } from 'react-bootstrap';
@@ -9,7 +9,17 @@ import axios from 'axios';
 import { axiosConfiguration } from '../variable/axios';
 
 function AppCheckbill() {
+    
     var list_CustomerOrder = [];
+    const [orderArray, setOrderArray] = useState([]);
+    useEffect(() => {
+        async function checkbill() {
+            await listoforder()
+            setOrderArray(loopThroughMenu());
+        }
+        checkbill()
+    }, []);// eslint-disable-line react-hooks/exhaustive-deps
+
     var tokenObject = localStorage.getItem("token");
     async function listoforder() {
         const Customerorder = {
@@ -20,34 +30,22 @@ function AppCheckbill() {
         await axios.post(`${axiosConfiguration.url}/api/order`, {
             Customerorder
         }).then((response) => {
-            list_CustomerOrder = response.data.listorder;
-            // console.log(list_CustomerOrder);
+            list_CustomerOrder = response.data;
+            console.log(list_CustomerOrder);
         }).catch((err) => {
             console.log(err)
         })
     }
-    // listoforder();
-    const [orderArray, setOrderArray] = useState(loopthroughorder());
-    const [alertArray, setAlertArray] = useState([]);
-    async function loopthroughorder() {
-        await listoforder();
-        // console.log(list_CustomerOrder);
-        for (let i = 0; i < list_CustomerOrder.length; i++) {
-            var list = list_CustomerOrder[i]
-            loopThroughMenu(list);
-        };
-    }
-    // loopthroughorder();
-    async function loopThroughMenu(list) {
+
+
+    function loopThroughMenu() {
         var MenuObjectString = localStorage.getItem("menu");
         var MenuObject = JSON.parse(MenuObjectString);
         var TotalPrice = 0;
         var tableArray = [];
-        let UserOrderKey = Object.keys(list);
+        let UserOrderKey = Object.keys(list_CustomerOrder);
         UserOrderKey.map(orderid => {
-            let orderdata = list[orderid];
-            console.log(list);
-            console.log(list[orderid]);
+            let orderdata = list_CustomerOrder[orderid];
             let menudata = MenuObject[orderdata["menuid"] - 1];
             TotalPrice += orderdata.quantity * menudata.price;
             return tableArray.push(<tr key={uuid()}>
@@ -65,21 +63,25 @@ function AppCheckbill() {
                 </td>
             </tr>);
         });
-        return
+        tableArray.push(<tr key={uuid()}>
+            <td colSpan="3"><strong>Total Price</strong></td>
+            <td><strong>{TotalPrice}$</strong></td>
+        </tr>);
+        return tableArray;
     }
 
-    // async function checkbill() {
-    //     const Checkout = {
-    //         "datatype": 8,
-    //         "token": "12345",
-    //         "allmenu": listorder
-    //     }
-    //     await axios.post(`${axiosConfiguration.url}/cashier`, {
-    //         Checkout
-    //     }).catch((err) => {
-    //         console.log(err)
-    //     })
-    // }
+    async function checkbill() {
+        const Checkout = {
+            "datatype": 8,
+            "token": "12345",
+            "allmenu": list_CustomerOrder
+        }
+        await axios.post(`${axiosConfiguration.url}/cashier`, {
+            Checkout
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
 
     return (
         <Container>
@@ -116,7 +118,7 @@ function AppCheckbill() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {/* {orderArray} */}
+                                {orderArray}
                             </tbody>
                         </Table>
                     </Col>
