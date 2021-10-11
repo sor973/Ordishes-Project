@@ -29,8 +29,8 @@ router.all('/', async function(req, res, next) {
       const jsonStr = JSON.stringify(data);
       const client = mqtt.connect("mqtt://192.168.42.201:1884",option);
       client.on('connect', function () {
-            client.publish('/orderapi/', jsonStr)
-            console.log("Connected to urlapi")
+            client.publish('/ordish/', jsonStr)
+            console.log("Connected to ordish")
           })
       
       client.on('message', function (topic, message) {
@@ -40,6 +40,7 @@ router.all('/', async function(req, res, next) {
       
       return res.send("Order Assign")
     }
+
     if(resp.datatype == 3){
       var list = [];
       const findstatus = await collection.find({datatype:4,token:resp.token}).toArray();
@@ -49,6 +50,7 @@ router.all('/', async function(req, res, next) {
       console.log(list)
       return res.send(findstatus[0])
     }
+
     if(resp.datatype == 6){
       var list = {};
       const findorder = await collection.find({datatype:2,token:resp.token}).toArray();

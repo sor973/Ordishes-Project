@@ -4,6 +4,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 
 
 function AppCashier() {
+    
     return (
         <Container>
             <Row>

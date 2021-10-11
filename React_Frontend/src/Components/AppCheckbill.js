@@ -12,6 +12,8 @@ function AppCheckbill() {
     
     var list_CustomerOrder = [];
     const [orderArray, setOrderArray] = useState([]);
+    var tokenObject = localStorage.getItem("token");
+
     useEffect(() => {
         async function checkbill() {
             await listoforder()
@@ -20,7 +22,6 @@ function AppCheckbill() {
         checkbill()
     }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
-    var tokenObject = localStorage.getItem("token");
     async function listoforder() {
         const Customerorder = {
             "datatype": 6,
@@ -36,7 +37,6 @@ function AppCheckbill() {
             console.log(err)
         })
     }
-
 
     function loopThroughMenu() {
         var MenuObjectString = localStorage.getItem("menu");
@@ -84,11 +84,12 @@ function AppCheckbill() {
             "token": "12345",
             "allmenu": list_CustomerOrder
         }
-        await axios.post(`${axiosConfiguration.url}/cashier`, {
+        await axios.post(`${axiosConfiguration.url}/api/checkout`, {
             Checkout
         }).catch((err) => {
             console.log(err)
         })
+        console.log("send");
     }
 
     return (
@@ -136,7 +137,7 @@ function AppCheckbill() {
                 </Row>
                 <Row>
                     <Col className="d-flex justify-content-center">
-                        <Button variant="outline-success" >Check bill <FontAwesomeIcon icon={faMoneyCheckAlt} /></Button>
+                        <Button variant="outline-success" onClick = { checkbill } >Check bill <FontAwesomeIcon icon={faMoneyCheckAlt} /></Button>
                     </Col>
                 </Row>
             </Card>
