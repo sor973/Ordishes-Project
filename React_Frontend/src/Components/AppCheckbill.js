@@ -1,36 +1,86 @@
 
-import React from 'react'
+import React, {useState} from 'react'
+import uuid from 'react-uuid';
 import moment from 'moment';
 import { Container, Row, Col, Table, Card, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUtensils, faMoneyCheckAlt } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios';
+import { axiosConfiguration } from '../variable/axios';
 
 function AppCheckbill() {
-    /*
-    var listorder = [];
+    var list_CustomerOrder = [];
     var tokenObject = localStorage.getItem("token");
     async function listoforder() {
         const Customerorder = {
-            "datatype" : 6,
-            "status" : "client",
-            "token" : tokenObject
+            "datatype": 6,
+            "status": "checkout",
+            "token": "12345"
         };
-        await axios.post("http://localhost:8000/api/order", {
+        await axios.post(`${axiosConfiguration.url}/api/order`, {
             Customerorder
         }).then((response) => {
-            listorder = response.data;
+            list_CustomerOrder = response.data.listorder;
+            // console.log(list_CustomerOrder);
         }).catch((err) => {
             console.log(err)
         })
     }
-    listoforder();
-
-    async function checkbill() {
-
-        
+    // listoforder();
+    const [orderArray, setOrderArray] = useState(loopthroughorder());
+    const [alertArray, setAlertArray] = useState([]);
+    async function loopthroughorder() {
+        await listoforder();
+        // console.log(list_CustomerOrder);
+        for (let i = 0; i < list_CustomerOrder.length; i++) {
+            var list = list_CustomerOrder[i]
+            loopThroughMenu(list);
+        };
     }
-    */
+    // loopthroughorder();
+    async function loopThroughMenu(list) {
+        var MenuObjectString = localStorage.getItem("menu");
+        var MenuObject = JSON.parse(MenuObjectString);
+        var TotalPrice = 0;
+        var tableArray = [];
+        let UserOrderKey = Object.keys(list);
+        UserOrderKey.map(orderid => {
+            let orderdata = list[orderid];
+            console.log(list);
+            console.log(list[orderid]);
+            let menudata = MenuObject[orderdata["menuid"] - 1];
+            TotalPrice += orderdata.quantity * menudata.price;
+            return tableArray.push(<tr key={uuid()}>
+                <td>
+                    {menudata.title}
+                </td>
+                <td>
+                    {orderdata.quantity}
+                </td>
+                <td>
+                    {menudata.price}$
+                </td>
+                <td>
+                    {orderdata.quantity * menudata.price}$
+                </td>
+            </tr>);
+        });
+        return
+    }
+
+    // async function checkbill() {
+    //     const Checkout = {
+    //         "datatype": 8,
+    //         "token": "12345",
+    //         "allmenu": listorder
+    //     }
+    //     await axios.post(`${axiosConfiguration.url}/cashier`, {
+    //         Checkout
+    //     }).catch((err) => {
+    //         console.log(err)
+    //     })
+    // }
+
     return (
         <Container>
             <Card className="mt-3 shadow p-3 mb-5 bg-white rounded">
@@ -66,42 +116,7 @@ function AppCheckbill() {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>steak t-bone</td>
-                                    <td>2</td>
-                                    <td>10</td>
-                                    <td>20</td>
-                                </tr>
-                                <tr>
-                                    <td>steak t-bone</td>
-                                    <td>2</td>
-                                    <td>10</td>
-                                    <td>20</td>
-                                </tr>
-                                <tr>
-                                    <td>steak t-bone</td>
-                                    <td>2</td>
-                                    <td>10</td>
-                                    <td>20</td>
-                                </tr>
-                                <tr>
-                                    <td>steak t-bone</td>
-                                    <td>2</td>
-                                    <td>10</td>
-                                    <td>20</td>
-                                </tr>
-                                <tr>
-                                    <td colSpan="3"><strong>Total Price :</strong></td>
-                                    <td><strong>60</strong></td>
-                                </tr>
-                                <tr>
-                                    <td colSpan="3">Tax 7% :</td>
-                                    <td>4.2</td>
-                                </tr>
-                                <tr>
-                                    <td colSpan="3"><strong>Pay amount :</strong></td>
-                                    <td><strong>64.2</strong></td>
-                                </tr>
+                                {/* {orderArray} */}
                             </tbody>
                         </Table>
                     </Col>
@@ -111,7 +126,7 @@ function AppCheckbill() {
                 </Row>
                 <Row>
                     <Col className="d-flex justify-content-center">
-                        <Button variant="outline-success">Check bill <FontAwesomeIcon icon={faMoneyCheckAlt} /></Button>
+                        <Button variant="outline-success" >Check bill <FontAwesomeIcon icon={faMoneyCheckAlt} /></Button>
                     </Col>
                 </Row>
             </Card>
