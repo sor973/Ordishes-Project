@@ -11,6 +11,7 @@ import { axiosConfiguration } from '../variable/axios';
 function AppCheckbill() {
     
     var list_CustomerOrder = [];
+    const [CustomerArray,setCustomerArray] = useState([]);
     const [orderArray, setOrderArray] = useState([]);
     var tokenObject = localStorage.getItem("token");
 
@@ -32,7 +33,7 @@ function AppCheckbill() {
             Customerorder
         }).then((response) => {
             list_CustomerOrder = response.data;
-            console.log(list_CustomerOrder);
+            setCustomerArray(response.data);
         }).catch((err) => {
             console.log(err)
         })
@@ -79,10 +80,11 @@ function AppCheckbill() {
     }
 
     async function checkbill() {
+        console.log(CustomerArray);
         const Checkout = {
             "datatype": 8,
             "token": "12345",
-            "allmenu": list_CustomerOrder
+            "allmenu": CustomerArray
         }
         await axios.post(`${axiosConfiguration.url}/api/checkout`, {
             Checkout

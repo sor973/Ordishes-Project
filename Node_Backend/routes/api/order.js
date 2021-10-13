@@ -21,16 +21,19 @@ router.all('/', async function(req, res, next) {
     const db = client.db(dbName);
     const collection = db.collection('development_stage');
 
-    var resp = req.body.Customerorder;
+    var resp = req.body;
     console.log(resp);
 
-    if(resp.datatype == 2 ) {
-      const data = resp
+    if(resp.Customerorder.datatype == 2 ) {
+      const data = resp.Customerorder
+      const data2 = resp.Customerorder2
       const jsonStr = JSON.stringify(data);
+      const jsonStr2 = JSON.stringify(data2);
       const client = mqtt.connect("mqtt://192.168.42.201:1884",option);
       client.on('connect', function () {
-            client.publish('/ordish/', jsonStr)
-            console.log("Connected to ordish")
+            client.publish('/ordish/', jsonStr);
+            client.publish('/ordish/', jsonStr2);
+            console.log("Connected to ordish");
           })
       
       client.on('message', function (topic, message) {
@@ -41,9 +44,9 @@ router.all('/', async function(req, res, next) {
       return res.send("Order Assign")
     }
 
-    if(resp.datatype == 3){
+    if(resp.Customerorder.datatype == 3){
       var list = [];
-      const findstatus = await collection.find({datatype:4,token:resp.token}).toArray();
+      const findstatus = await collection.find({datatype:4,token:resp.Customerorder.token}).toArray();
       for (let i = 0; i < (findstatus.length); i++){
         list.push(findstatus[i].menu[0]);
       }
@@ -51,9 +54,9 @@ router.all('/', async function(req, res, next) {
       return res.send(findstatus[0])
     }
 
-    if(resp.datatype == 6){
+    if(resp.Customerorder.datatype == 6){
       var list = {};
-      const findorder = await collection.find({datatype:2,token:resp.token}).toArray();
+      const findorder = await collection.find({datatype:21,token:resp.Customerorder.token}).toArray();
       for (let i = 0; i < (findorder.length); i++) {
         list = Object.assign({}, list, findorder[i].menu);
       }

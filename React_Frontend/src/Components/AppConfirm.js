@@ -64,16 +64,39 @@ function AppConfirm({Order}) {
         ]);
         console.log(orderArray)
     }
+
+    async function changedata() {
+        var MenuObjectString = localStorage.getItem("menu");
+        var MenuObject = JSON.parse(MenuObjectString);
+        const OrderArray = [];
+        let UserOrderKey = Object.keys(Order.order);
+        UserOrderKey.map(orderid => {
+            let menudata = MenuObject[Order.order[orderid]["menuid"]-1];
+            var Orderdata = {} ;
+            Orderdata["name"] = menudata.title;
+            Orderdata["num"] = Order.order[orderid].quantity;
+            Orderdata["val"] = menudata.price;
+            return OrderArray.push(Orderdata);
+        })
+        return OrderArray
+    }
+    console.log(Order.order);
     async function submitOrder(){
+        const OrderArray = await changedata();
         const Customerorder = {
             "datatype" : 2,
             "table" : 15,
             "token":"12345",
-            "menu" : Order.order,
-            "status" : "letcook"
+            "list" : OrderArray,
+            "status" : "let's cooking"
+        }
+        const Customerorder2 = {
+            "datatype" : 2.1,
+            "token":"12345",
+            "menu" : Order.order
         }
         await axios.post(`${axiosConfiguration.url}/api/order`, {
-            Customerorder
+            Customerorder,Customerorder2
         }).then((response) => {
             Order.order = {};
             Order.clearOrder();
@@ -87,6 +110,7 @@ function AppConfirm({Order}) {
         }).catch((err) => {
             console.log(err)
         })
+
     }
     return (
 

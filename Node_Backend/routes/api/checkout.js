@@ -32,7 +32,6 @@ router.post('/', async function (req, res, next) {
         console.log(jsonStr);
         return 
     }
-
 });
 
 module.exports = router;
