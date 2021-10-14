@@ -1,9 +1,11 @@
 import React from 'react'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Redirect } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Row, Col, Card, Button, Form, ButtonGroup} from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus, faUtensils } from '@fortawesome/free-solid-svg-icons'
+import { TokenAuth } from '../functions/tokenAuth';
 
 function AppMenu({menuindex, Order}) {
     let MenuObjectString = localStorage.getItem("menu");
@@ -13,6 +15,13 @@ function AppMenu({menuindex, Order}) {
     const maxDishAmount = 10;
     const [dish, updateDish] = useState(0);
     const [maxDishStatus, updateMaxDishStatus] = useState(false);
+    const [redirect, setredirect] = useState();
+
+    useEffect(()=>{
+        if(!(localStorage.getItem('token')&&TokenAuth.tokenAuthCheck(localStorage.getItem('token')))){
+            setredirect(<Redirect to="/" />)
+        }
+    }, [])
 
     function decreaseDishAmount(){
         if(dish > 0){
@@ -37,6 +46,7 @@ function AppMenu({menuindex, Order}) {
 
     return (
         <Col sm="12" lg="4">
+            {redirect}
             <Row>
                 <Col md>
                     <Card className="mb-3 shadow p-3 mb-5 bg-white rounded">
