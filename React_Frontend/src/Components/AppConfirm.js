@@ -76,6 +76,7 @@ function AppConfirm({Order}) {
             Orderdata["name"] = menudata.title;
             Orderdata["num"] = Order.order[orderid].quantity;
             Orderdata["val"] = menudata.price;
+            Orderdata["menuid"] = Order.order[orderid].menuid;
             return OrderArray.push(Orderdata);
         })
         return OrderArray
@@ -91,7 +92,8 @@ function AppConfirm({Order}) {
             "status" : "let's cooking"
         }
         const Customerorder2 = {
-            "datatype" : 2.1,
+            "datatype" : 7,
+            "table": 15,
             "token":"12345",
             "menu" : Order.order
         }

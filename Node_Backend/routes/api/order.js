@@ -20,6 +20,7 @@ router.all('/', async function(req, res, next) {
     await client.connect();
     const db = client.db(dbName);
     const collection = db.collection('development_stage');
+    const collection2 = db.collection('orderfornode');
 
     var resp = req.body;
     console.log(resp);
@@ -56,7 +57,7 @@ router.all('/', async function(req, res, next) {
 
     if(resp.Customerorder.datatype == 6){
       var list = {};
-      const findorder = await collection.find({datatype:21,token:resp.Customerorder.token}).toArray();
+      const findorder = await collection2.find({datatype:7,token:resp.Customerorder.token}).toArray();
       for (let i = 0; i < (findorder.length); i++) {
         list = Object.assign({}, list, findorder[i].menu);
       }

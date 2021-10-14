@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react'
 import uuid from 'react-uuid';
 import moment from 'moment';
@@ -9,7 +8,7 @@ import axios from 'axios';
 import { axiosConfiguration } from '../variable/axios';
 
 function AppCheckbill() {
-    
+
     var list_CustomerOrder = [];
     const [CustomerArray,setCustomerArray] = useState([]);
     const [orderArray, setOrderArray] = useState([]);
