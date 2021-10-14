@@ -12,10 +12,11 @@ function AppQRCodeGen() {
     const [name, setName] = useState("");
     const [qrcode, setQR] = useState("");
     const [errors, setError] = useState("");
-    const [show, setShow] = useState(false);
+    const [showError, setShowError] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
 
     async function postTable(e) {
-        e.preventDefault()
+        e.preventDefault();
         let x = +name;
         const Table = {
             "table": x
@@ -24,13 +25,16 @@ function AppQRCodeGen() {
             Table
         }).then((response) => {
             setURL(response.data);
-            setError(null)
-            setShow(false)
+            setError(null);
+            setShowError(false);
+            setShowSuccess(true);
+            autoHideSuccess();
             console.log(response.data);
         }).catch(e => {
             setError(e.response.data);
-            setShow(true)
-            console.log(e.response.data)
+            setShowError(true);
+            autoHideError();
+            console.log(e.response.data);
         })
     }
 
@@ -45,6 +49,14 @@ function AppQRCodeGen() {
 
     console.log(qrcode);
 
+    function autoHideError() {
+        setTimeout(() => {setShowError(false)}, 3500)
+    }
+
+    function autoHideSuccess() {
+        setTimeout(() => {setShowSuccess(false)}, 3500)
+    }
+
     return (
         <Container>
             <Card className="mt-3 shadow p-3 mb-5 bg-white rounded">
@@ -56,7 +68,8 @@ function AppQRCodeGen() {
                                 <Form.Group>
                                     <Form.Label>Enter table</Form.Label>
                                     <Form.Control type="number" placeholder="Enter table" value={name} onChange={(e) => setName(e.target.value)} />
-                                    <Alert variant="danger" show={show} className="mt-3">{errors && <div>{errors}</div>}</Alert>
+                                    <Alert variant="danger" show={showError} className="mt-3">{errors && <div>{errors}</div>}</Alert>
+                                    <Alert variant="success" show={showSuccess} className="mt-3">QR code is ready</Alert>
                                 </Form.Group>
                                 <Button variant="primary" type="submit" className="d-flex justify-content-center">Submit</Button>
                             </Form>

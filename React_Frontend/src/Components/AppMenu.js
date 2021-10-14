@@ -1,9 +1,11 @@
 import React from 'react'
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { Redirect } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Row, Col, Card, Button, Form, ButtonGroup} from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus, faUtensils } from '@fortawesome/free-solid-svg-icons'
+import { TokenAuth } from '../functions/tokenAuth';
 
 function AppMenu({menuindex, Order}) {
     let MenuObjectString = localStorage.getItem("menu");
@@ -13,6 +15,22 @@ function AppMenu({menuindex, Order}) {
     const maxDishAmount = 10;
     const [dish, updateDish] = useState(0);
     const [maxDishStatus, updateMaxDishStatus] = useState(false);
+    const [redirect, setredirect] = useState();
+    const componentIsMounted = useRef(true);
+
+    useEffect(()=>{
+        async function doAuth(){
+            if(!localStorage.getItem('token')) if(componentIsMounted.current) return setredirect(<Redirect to="/" />);
+            let getTokenStatus = await TokenAuth.tokenAuthCheck(localStorage.getItem('token'))
+            if(!getTokenStatus){
+                if(componentIsMounted.current) return setredirect(<Redirect to="/" />);
+            }
+        } 
+        doAuth();
+        return () => {
+            componentIsMounted.current = false;
+        };
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     function decreaseDishAmount(){
         if(dish > 0){
@@ -72,6 +90,7 @@ function AppMenu({menuindex, Order}) {
                     </Card>
                 </Col>
             </Row>
+            {redirect}
         </Col>
     )
 }

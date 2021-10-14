@@ -121,4 +121,41 @@ graph TD
     E -->|status : finish| K[update : dataBSON by token & order]
     F -->|status : cancel| K -->  I[update data in MongoDB]
 ```
+-------------------------------------
+# Ordishes Project - C Backend third_week
+### main in work
+- publish data.JSON from web customer
+- sent data.BSON/BCON to MongoDB 
 
+## Progress of C Backend
+in third week C Backend
+- MongoDB for database
+    - [x] get string from MQTT_broken main web customer. 
+    - [x] edit datajson.string to data.BSON/BCON.
+    - [x] insert datatype in some MongoDB.
+-------------------------------------
+- MongoDB for help kitchen
+    - [x] cancel delete data collection(orderfornode).
+-------------------------------------
+## flow for third week.
+```mermaid
+graph TD
+    A[c-end] --> B(MQTT)  
+    B --> |get datajson.string| C[datatype?] 
+    C --> |datatpye:2| D[list order]
+    D --> |insert data to| E[collection.kitchen]
+    E --> |show list| F[GUI GTK_C to show Chef]
+    C --> |datatpye:7| G[list order]
+    G --> |insert data to| H[collection.node]
+    H --> |use in| I[NodeJS]
+    C --> |datatpye:1| J[collect token]
+    J --> |insert data to| K[collection.token]
+    C --> |datatpye:9| L[when customer paid]
+    L --> M[clear add customer]
+    M --> |delete data| E
+    M --> |delete data| H
+    M --> |delete data| K
+    F --> N[when Chef cancel list order]
+    N --> |update data| E
+    N --> |delete data| H
+```

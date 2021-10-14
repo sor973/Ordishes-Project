@@ -73,6 +73,7 @@ LIST OF NODE_MODULES
 - react-bootstrap
 - react-router-dom
 - react-uuid
+- query-string
 - @fortawesome/react-fontawesome
 - @fortawesome/fontawesome-svg-core
 - @fortawesome/free-solid-svg-icons

@@ -3,7 +3,7 @@ const router = express.Router();
 const apiRouter = require("./api");
 /* Edit Here of you want the script to render from React Build.
 You need to run `npm run build` on react frontend. */
-const EnableRenderFromBuild = true;
+const EnableRenderFromBuild = false;
 
 router.use('/api',apiRouter);
 
