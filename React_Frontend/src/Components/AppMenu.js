@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Redirect } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Row, Col, Card, Button, Form, ButtonGroup} from 'react-bootstrap'
@@ -16,12 +16,21 @@ function AppMenu({menuindex, Order}) {
     const [dish, updateDish] = useState(0);
     const [maxDishStatus, updateMaxDishStatus] = useState(false);
     const [redirect, setredirect] = useState();
+    const componentIsMounted = useRef(true);
 
     useEffect(()=>{
-        if(!(localStorage.getItem('token')&&TokenAuth.tokenAuthCheck(localStorage.getItem('token')))){
-            setredirect(<Redirect to="/" />)
-        }
-    }, [])
+        async function doAuth(){
+            if(!localStorage.getItem('token')) if(componentIsMounted.current) return setredirect(<Redirect to="/" />);
+            let getTokenStatus = await TokenAuth.tokenAuthCheck(localStorage.getItem('token'))
+            if(!getTokenStatus){
+                if(componentIsMounted.current) return setredirect(<Redirect to="/" />);
+            }
+        } 
+        doAuth();
+        return () => {
+            componentIsMounted.current = false;
+        };
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     function decreaseDishAmount(){
         if(dish > 0){
@@ -46,7 +55,6 @@ function AppMenu({menuindex, Order}) {
 
     return (
         <Col sm="12" lg="4">
-            {redirect}
             <Row>
                 <Col md>
                     <Card className="mb-3 shadow p-3 mb-5 bg-white rounded">
@@ -82,6 +90,7 @@ function AppMenu({menuindex, Order}) {
                     </Card>
                 </Col>
             </Row>
+            {redirect}
         </Col>
     )
 }
