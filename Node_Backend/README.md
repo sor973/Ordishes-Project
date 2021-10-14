@@ -20,7 +20,7 @@ For the Back-End Customer side, we will use node.js to connect Front-End and Dat
 
 -Checktoken
     
-    1.checktoken if it available or not
+    1. Checktoken in in database and send back the signal to Frontend
 
 ---------------------------------
 **TASK LIST**
