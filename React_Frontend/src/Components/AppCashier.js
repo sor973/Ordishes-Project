@@ -6,9 +6,12 @@ import { faCashRegister } from '@fortawesome/free-solid-svg-icons'
 
 
 function AppCashier() {
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [showDeny, setShowDeny] = useState(false);
+    const handleCloseConfirm = () => setShowConfirm(false);
+    const handleShowConfirm = () => setShowConfirm(true);
+    const handleCloseDeny = () => setShowDeny(false);
+    const handleShowDeny = () => setShowDeny(true);
     return (
         <Container>
             <Card className="mt-3 shadow p-3 mb-5 bg-white rounded">
@@ -68,13 +71,10 @@ function AppCashier() {
                     </Row>
                     <Row>
                         <Col className="d-flex justify-content-center">
-                            <Button variant="danger">Deny</Button>
-                        </Col>
-                        <Col className="d-flex justify-content-center">
-                            <Button variant="success" onClick={handleShow}>Confirm</Button>
+                            <Button variant="danger" onClick={handleShowDeny}>Deny</Button>
                             <Modal
-                                show={show}
-                                onHide={handleClose}
+                                show={showDeny}
+                                onHide={handleCloseDeny}
                                 backdrop="static"
                                 keyboard={false}
                                 centered>
@@ -82,11 +82,31 @@ function AppCashier() {
                                     <Modal.Title>Are you sure?</Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body>
-                                    Are you sure you want to confirm the payment?
+                                    Are you sure you want to <span className="text-danger"><strong>deny</strong></span> this payment?
                                 </Modal.Body>
                                 <Modal.Footer>
-                                    <Button variant="secondary" onClick={handleClose}>Close</Button>
-                                    <Button variant="success">Confirm</Button>
+                                    <Button variant="secondary" onClick={handleCloseDeny}>No</Button>
+                                    <Button variant="primary">Yes</Button>
+                                </Modal.Footer>
+                            </Modal>
+                        </Col>
+                        <Col className="d-flex justify-content-center">
+                            <Button variant="success" onClick={handleShowConfirm}>Confirm</Button>
+                            <Modal
+                                show={showConfirm}
+                                onHide={handleCloseConfirm}
+                                backdrop="static"
+                                keyboard={false}
+                                centered>
+                                <Modal.Header closeButton>
+                                    <Modal.Title>Are you sure?</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    <p>Are you sure you want to <span className="text-success"><strong>confirm</strong></span> this payment?</p>
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button variant="secondary" onClick={handleCloseConfirm}>No</Button>
+                                    <Button variant="primary">Yes</Button>
                                 </Modal.Footer>
                             </Modal>
                         </Col>
