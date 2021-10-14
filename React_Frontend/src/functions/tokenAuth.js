@@ -10,10 +10,8 @@ async function tokenAuthCheck(token){
         const response = await axios.post(`${axiosConfiguration.url}/api/checktoken`,{
             token: token
         });
-        if(!response.data.exist){
-            return false;
-        }
-        return true;
+        if(!response.data.exist) return false;
+        if(response.data.exist) return true;
     }
     return false;
 }
