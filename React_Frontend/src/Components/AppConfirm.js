@@ -1,15 +1,33 @@
-import React from 'react'
+import React,{ useEffect, useRef } from 'react'
 import { Container, Row, Col, Table, Button, Alert, Card } from 'react-bootstrap';
+import { Redirect } from 'react-router-dom';
 import uuid from 'react-uuid';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faTrashAlt, faUtensils } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { axiosConfiguration } from '../variable/axios';
+import { TokenAuth } from '../functions/tokenAuth';
 
 function AppConfirm({Order}) {
     const [orderArray, setOrderArray] = useState(loopThroughMenu());
     const [alertArray, setAlertArray] = useState([]);
+    const [redirect, setredirect] = useState();
+    const componentIsMounted = useRef(true);
+    useEffect(()=>{
+        async function doAuth(){
+            if(!localStorage.getItem('token')) if(componentIsMounted.current) return setredirect(<Redirect to="/" />);
+            let getTokenStatus = await TokenAuth.tokenAuthCheck(localStorage.getItem('token'))
+            if(!getTokenStatus){
+                if(componentIsMounted.current) return setredirect(<Redirect to="/" />);
+            }
+        } 
+        doAuth();
+        return () => {
+            componentIsMounted.current = false;
+        };
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
     function loopThroughMenu(){
         var MenuObjectString = localStorage.getItem("menu");
         var MenuObject = JSON.parse(MenuObjectString);
@@ -117,6 +135,7 @@ function AppConfirm({Order}) {
     return (
 
         <Container >
+            {redirect}
             <Card className="mt-3 shadow p-3 mb-5 bg-white rounded">
                 <Row>
                     <Col>

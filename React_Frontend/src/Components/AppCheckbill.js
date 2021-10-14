@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import { Redirect } from 'react-router-dom';
 import uuid from 'react-uuid';
 import moment from 'moment';
 import { Container, Row, Col, Table, Card, Button } from 'react-bootstrap';
@@ -6,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUtensils, faMoneyCheckAlt } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios';
 import { axiosConfiguration } from '../variable/axios';
+import { TokenAuth } from '../functions/tokenAuth';
 
 function AppCheckbill() {
 
@@ -13,6 +15,21 @@ function AppCheckbill() {
     const [CustomerArray,setCustomerArray] = useState([]);
     const [orderArray, setOrderArray] = useState([]);
     var tokenObject = localStorage.getItem("token");
+    const [redirect, setredirect] = useState();
+    const componentIsMounted = useRef(true);
+    useEffect(()=>{
+        async function doAuth(){
+            if(!localStorage.getItem('token')) if(componentIsMounted.current) return setredirect(<Redirect to="/" />);
+            let getTokenStatus = await TokenAuth.tokenAuthCheck(localStorage.getItem('token'))
+            if(!getTokenStatus){
+                if(componentIsMounted.current) return setredirect(<Redirect to="/" />);
+            }
+        } 
+        doAuth();
+        return () => {
+            componentIsMounted.current = false;
+        };
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         async function checkbill() {
@@ -95,6 +112,7 @@ function AppCheckbill() {
 
     return (
         <Container>
+            {redirect}
             <Card className="mt-3 shadow p-3 mb-5 bg-white rounded">
                 <Row className="mt-3">
                     <Col className="d-flex justify-content-center"><h3>Ordishes <FontAwesomeIcon icon={faUtensils} /></h3></Col>
