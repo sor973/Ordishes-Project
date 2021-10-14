@@ -1,38 +1,118 @@
-
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import { Redirect } from 'react-router-dom';
+import uuid from 'react-uuid';
 import moment from 'moment';
 import { Container, Row, Col, Table, Card, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUtensils, faMoneyCheckAlt } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios';
+import { axiosConfiguration } from '../variable/axios';
+import { TokenAuth } from '../functions/tokenAuth';
 
 function AppCheckbill() {
-    /*
-    var listorder = [];
+
+    var list_CustomerOrder = [];
+    const [CustomerArray,setCustomerArray] = useState([]);
+    const [orderArray, setOrderArray] = useState([]);
     var tokenObject = localStorage.getItem("token");
+    const [redirect, setredirect] = useState();
+    const componentIsMounted = useRef(true);
+    useEffect(()=>{
+        async function doAuth(){
+            if(!localStorage.getItem('token')) if(componentIsMounted.current) return setredirect(<Redirect to="/" />);
+            let getTokenStatus = await TokenAuth.tokenAuthCheck(localStorage.getItem('token'))
+            if(!getTokenStatus){
+                if(componentIsMounted.current) return setredirect(<Redirect to="/" />);
+            }
+        } 
+        doAuth();
+        return () => {
+            componentIsMounted.current = false;
+        };
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        async function checkbill() {
+            await listoforder()
+            setOrderArray(loopThroughMenu());
+        }
+        checkbill()
+    }, []);// eslint-disable-line react-hooks/exhaustive-deps
+
     async function listoforder() {
         const Customerorder = {
-            "datatype" : 6,
-            "status" : "client",
-            "token" : tokenObject
+            "datatype": 6,
+            "status": "checkout",
+            "token": "12345"
         };
-        await axios.post("http://localhost:8000/api/order", {
+        await axios.post(`${axiosConfiguration.url}/api/order`, {
             Customerorder
         }).then((response) => {
-            listorder = response.data;
+            list_CustomerOrder = response.data;
+            setCustomerArray(response.data);
         }).catch((err) => {
             console.log(err)
         })
     }
-    listoforder();
+
+    function loopThroughMenu() {
+        var MenuObjectString = localStorage.getItem("menu");
+        var MenuObject = JSON.parse(MenuObjectString);
+        var TotalPrice = 0;
+        var tableArray = [];
+        let UserOrderKey = Object.keys(list_CustomerOrder);
+        UserOrderKey.map(orderid => {
+            let orderdata = list_CustomerOrder[orderid];
+            let menudata = MenuObject[orderdata["menuid"] - 1];
+            TotalPrice += orderdata.quantity * menudata.price;
+            return tableArray.push(<tr key={uuid()}>
+                <td>
+                    {menudata.title}
+                </td>
+                <td>
+                    {orderdata.quantity}
+                </td>
+                <td>
+                    {menudata.price}$
+                </td>
+                <td>
+                    {orderdata.quantity * menudata.price}$
+                </td>
+            </tr>);
+        });
+        tableArray.push(<tr key={uuid()}>
+            <td colSpan="3"><strong>Subtotal</strong> :</td>
+            <td><strong>{TotalPrice}$</strong></td>
+        </tr>);
+        tableArray.push(<tr key={uuid()}>
+            <td colSpan="3">Net Total :</td>
+            <td>{TotalPrice-(TotalPrice*7/100)}$</td>
+        </tr>);
+        tableArray.push(<tr key={uuid()}>
+            <td colSpan="3">Tax 7% :</td>
+            <td>{TotalPrice*7/100}$</td>
+        </tr>);
+        return tableArray;
+    }
 
     async function checkbill() {
-
-        
+        console.log(CustomerArray);
+        const Checkout = {
+            "datatype": 8,
+            "token": "12345",
+            "allmenu": CustomerArray
+        }
+        await axios.post(`${axiosConfiguration.url}/api/checkout`, {
+            Checkout
+        }).catch((err) => {
+            console.log(err)
+        })
+        console.log("send");
     }
-    */
+
     return (
         <Container>
+            {redirect}
             <Card className="mt-3 shadow p-3 mb-5 bg-white rounded">
                 <Row className="mt-3">
                     <Col className="d-flex justify-content-center"><h3>Ordishes <FontAwesomeIcon icon={faUtensils} /></h3></Col>
@@ -41,17 +121,17 @@ function AppCheckbill() {
                     <Col className="d-flex justify-content-center"><p>1518 Pracharat 1 Road,Wongsawang,<br /> Bangsue, Bangkok 10800 Thailand.</p></Col>
                 </Row>
                 <Row>
-                    <Col className="d-flex justify-content-center"><p>Tel: 000-000-0000</p></Col>
+                    <Col className="d-flex justify-content-center"><p>Tel : 000-000-0000</p></Col>
                 </Row>
                 <Row>
-                    <Col className="d-flex justify-content-center"><p>Email: ordishes@test.com</p></Col>
+                    <Col className="d-flex justify-content-center"><p>Email : ordishes@test.com</p></Col>
                 </Row>
                 <Row>
                     <Col className="d-flex justify-content-center">
-                        <p>Date: {moment().format('DD/MM/YYYY')}</p>
+                        <p>Date : {moment().format('DD/MM/YYYY')}</p>
                     </Col>
                     <Col className="d-flex justify-content-center">
-                        <p>Time: {moment().format('HH:mm')}</p>
+                        <p>Time : {moment().format('HH:mm')}</p>
                     </Col>
                 </Row>
                 <Row>
@@ -66,42 +146,7 @@ function AppCheckbill() {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>steak t-bone</td>
-                                    <td>2</td>
-                                    <td>10</td>
-                                    <td>20</td>
-                                </tr>
-                                <tr>
-                                    <td>steak t-bone</td>
-                                    <td>2</td>
-                                    <td>10</td>
-                                    <td>20</td>
-                                </tr>
-                                <tr>
-                                    <td>steak t-bone</td>
-                                    <td>2</td>
-                                    <td>10</td>
-                                    <td>20</td>
-                                </tr>
-                                <tr>
-                                    <td>steak t-bone</td>
-                                    <td>2</td>
-                                    <td>10</td>
-                                    <td>20</td>
-                                </tr>
-                                <tr>
-                                    <td colSpan="3"><strong>Total Price :</strong></td>
-                                    <td><strong>60</strong></td>
-                                </tr>
-                                <tr>
-                                    <td colSpan="3">Tax 7% :</td>
-                                    <td>4.2</td>
-                                </tr>
-                                <tr>
-                                    <td colSpan="3"><strong>Pay amount :</strong></td>
-                                    <td><strong>64.2</strong></td>
-                                </tr>
+                                {orderArray}
                             </tbody>
                         </Table>
                     </Col>
@@ -111,7 +156,7 @@ function AppCheckbill() {
                 </Row>
                 <Row>
                     <Col className="d-flex justify-content-center">
-                        <Button variant="outline-success">Check bill <FontAwesomeIcon icon={faMoneyCheckAlt} /></Button>
+                        <Button variant="outline-success" onClick = { checkbill } >Check bill <FontAwesomeIcon icon={faMoneyCheckAlt} /></Button>
                     </Col>
                 </Row>
             </Card>

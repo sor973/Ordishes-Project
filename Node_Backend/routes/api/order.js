@@ -20,22 +20,21 @@ router.all('/', async function(req, res, next) {
     await client.connect();
     const db = client.db(dbName);
     const collection = db.collection('development_stage');
+    const collection2 = db.collection('orderfornode');
 
-    var resp = req.body.Customerorder;
+    var resp = req.body;
     console.log(resp);
 
-    if(resp.datatype == 2 ){
-      const findResult = await collection.find({orderid:resp.orderid}).toArray();
-  
-      if (!_.isEmpty(findResult)) {
-        return res.status(400).send("This order is already assign");
-      }
-      const data = resp
+    if(resp.Customerorder.datatype == 2 ) {
+      const data = resp.Customerorder
+      const data2 = resp.Customerorder2
       const jsonStr = JSON.stringify(data);
+      const jsonStr2 = JSON.stringify(data2);
       const client = mqtt.connect("mqtt://192.168.42.201:1884",option);
       client.on('connect', function () {
-            client.publish('/orderapi/', jsonStr)
-            console.log("Connected to urlapi")
+            client.publish('/ordish/', jsonStr);
+            client.publish('/ordish/', jsonStr2);
+            console.log("Connected to ordish");
           })
       
       client.on('message', function (topic, message) {
@@ -45,27 +44,24 @@ router.all('/', async function(req, res, next) {
       
       return res.send("Order Assign")
     }
-    // if(resp.datatype == 3){
-    //   //request status
-    //   var list = [];
-    //   const findstatus = await collection.find({datatype:4,token:resp.token}).toArray();
-    //   // for (let i = 0; i < (findstatus.length); i++){
-    //   //   list.push(findstatus[i].menu[0]);
-    //   // }
-    //   // console.log(list)
-    //   return res.send(findstatus[0])
-    // }
-    if(resp.datatype == 6){
-      // list of order 
+
+    if(resp.Customerorder.datatype == 3){
       var list = [];
-      const findorder = await collection.find({datatype:2,token:resp.token}).toArray();
-      for (let i = 0; i < (findorder.length); i++){
-        list.push(findorder[i].menu);
-        console.log(findorder[i].menu);
+      const findstatus = await collection.find({datatype:4,token:resp.Customerorder.token}).toArray();
+      for (let i = 0; i < (findstatus.length); i++){
+        list.push(findstatus[i].menu[0]);
       }
-      const listorder = {"listorder": list} ;
-      // console.log(list)
-      return res.send(listorder)
+      console.log(list)
+      return res.send(findstatus[0])
+    }
+
+    if(resp.Customerorder.datatype == 6){
+      var list = {};
+      const findorder = await collection2.find({datatype:7,token:resp.Customerorder.token}).toArray();
+      for (let i = 0; i < (findorder.length); i++) {
+        list = Object.assign({}, list, findorder[i].menu);
+      }
+      return res.send(list)
     }
   });
   

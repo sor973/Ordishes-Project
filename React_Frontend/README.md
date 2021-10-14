@@ -31,7 +31,7 @@ graph TB
     - [x] Design **token login page**.
     - [ ] Design user interface **status page**.
 - User interface design (cashier) by using React.
-    - [ ] Design user interface **cashier page**.
+    - [x] Design user interface **cashier page**.
     - [x] Design user interface **qr code generate page**.
 - User interface design (kitchen) by using GTK C language.
     - [ ] Design user interface kitchen window application.
@@ -45,7 +45,8 @@ graph TB
     - **token login page** (client).
         - [x] Coding button `submit`.
     - **cashier page** (cashier).
-        - [ ] Coding button `commit`. 
+        - [x] Coding button `deny`. 
+        - [x] Coding button `confirm`. 
     - **qr code generate page** (cashier).
         - [x] Coding button `generate QR code`.
     - **kitchen application** (kitchen).
@@ -56,9 +57,9 @@ graph TB
     - [x] Redesign user interface **menu page** with bootstrap-react.
     - [x] Redesign user interface **confirm order page** with bootstrap-react.
     - [x] Redesign user interface **check bill page** with bootstrap-react.
-    - [ ] Redesign user interface **status page** with bootstrap-react.
-    - [ ] Redesign user interface **token login page** with bootstrap-react.
-    - [ ] Redesign user interface **cashier page** with bootstrap-react.
+    - [x] Redesign user interface **status page** with bootstrap-react.
+    - [x] Redesign user interface **token login page** with bootstrap-react.
+    - [x] Redesign user interface **cashier page** with bootstrap-react.
     - [x] Redesign user interface **qr code generate page** with bootstrap-react.
 
 
@@ -73,6 +74,7 @@ LIST OF NODE_MODULES
 - react-bootstrap
 - react-router-dom
 - react-uuid
+- query-string
 - @fortawesome/react-fontawesome
 - @fortawesome/fontawesome-svg-core
 - @fortawesome/free-solid-svg-icons

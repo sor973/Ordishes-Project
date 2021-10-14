@@ -1,0 +1,30 @@
+Datatype Name       Integer         Action
+--------------------------------------------------------------------
+- Token -
+token_res           1               Respond Token back to Cashier(C Backend)
+
+- Order -
+order_req           2               Order Food(Client)
+order_sta_req       3               Request Food Status(Client)
+order_sta_upd       4               Update Food Status(Kitchen/Admin)
+order_get           6               Get list of all order(*)
+order_get_customer  8               Get Customer order for checkout
+order_paid          9               Mark Token as paid or inactive(*Backend,Cashier) Delete Token
+
+- Kitchen -
+kitchen_in          10              New Order Request to Kitchen(Backend C -> Kitchen)
+kitchen_inprog      11              Mark the order as "Currently Cooking"(Kitchen -> backend C)
+kitchen_out         12              Mark the order as "Done" (Kitchen -> backend C)
+kitchen_cancel      13              Mark the order as "Canceled" (Kitchen -> backend C)
+
+{datatype:1, table:85, token:"123456"}
+{datatype:2, table: 12, token:"12345",menu:{"e060a9ab-91d3-44ed-85ba-a8c5e99a3aad":1,"e060a9ab-91d3-44ed-85ba-a8c5e99a3aac":3},status: "Let Cooking", order: 1} -> VOID
+{datatype:3, orderid:"e060a9ab-91d3-44ed-85ba-a8125616544649", token:"12345"} -> {datatype:4, menu:[{"e060a9ab-91d3-44ed-85ba-a8c5e99a3aac":"In Progress"}], orderid:"e060a9ab-91d3-44ed-85ba-a8125616544649", token:"12345"};
+{datatype:6, status:"checkout", token:"12345"} -> NODEJS/MONGODB -> {datatype:6, allmenu:[...{menu}], token:"12345"};
+
+{datatype:8, token:...} -> NODEJS/MONGODB -> {datatype:8, token:..., allmenu=[...{order}]}
+{datatype:9, token:...} -> VOID
+{datatype:10, token:..., orderid:...} -> GTK VOID
+{datatype:11, token:..., orderid:...} -> {datatype:4, ...};
+{datatype:12, token:..., orderid:...} -> {datatype:4, ...};
+{datatype:13, token:..., orderid:..., menu:[...id]} -> {datatype:4, ...};

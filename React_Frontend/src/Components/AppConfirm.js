@@ -1,15 +1,33 @@
-import React from 'react'
+import React,{ useEffect, useRef } from 'react'
 import { Container, Row, Col, Table, Button, Alert, Card } from 'react-bootstrap';
+import { Redirect } from 'react-router-dom';
 import uuid from 'react-uuid';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faTrashAlt, faUtensils } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { axiosConfiguration } from '../variable/axios';
+import { TokenAuth } from '../functions/tokenAuth';
 
 function AppConfirm({Order}) {
     const [orderArray, setOrderArray] = useState(loopThroughMenu());
     const [alertArray, setAlertArray] = useState([]);
+    const [redirect, setredirect] = useState();
+    const componentIsMounted = useRef(true);
+    useEffect(()=>{
+        async function doAuth(){
+            if(!localStorage.getItem('token')) if(componentIsMounted.current) return setredirect(<Redirect to="/" />);
+            let getTokenStatus = await TokenAuth.tokenAuthCheck(localStorage.getItem('token'))
+            if(!getTokenStatus){
+                if(componentIsMounted.current) return setredirect(<Redirect to="/" />);
+            }
+        } 
+        doAuth();
+        return () => {
+            componentIsMounted.current = false;
+        };
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
     function loopThroughMenu(){
         var MenuObjectString = localStorage.getItem("menu");
         var MenuObject = JSON.parse(MenuObjectString);
@@ -35,7 +53,7 @@ function AppConfirm({Order}) {
                 </td>
                 <td>
                     <div className="d-flex justify-content-center">
-                        <FontAwesomeIcon className="text-danger" icon={faTimes} onClick={()=>{Order.delOrder(orderid);updateOrderArray();}} size="lg"/>
+                        <FontAwesomeIcon className="text-danger" icon={faTimes} onClick={()=>{Order.delOrder(orderid);updateOrderArray();}} size="lg" style={{"cursor": "pointer"}}/>
                     </div>
                 </td>
             </tr>);
@@ -43,8 +61,11 @@ function AppConfirm({Order}) {
         tableArray.push(<tr key={uuid()}>
             <td colSpan="3"><strong>Total Price</strong></td>
             <td><strong>{TotalPrice}$</strong></td>
-            <td><div className="d-flex justify-content-center"><Button disabled={!Object.keys(Order.order).length} onClick={cancelAllOrder} size="sm" variant="outline-danger">Cancel All <FontAwesomeIcon icon={faTrashAlt} /></Button></div></td>
+            <td>
+                <div className="d-flex justify-content-center"><Button disabled={!Object.keys(Order.order).length} onClick={cancelAllOrder} size="sm" variant="outline-danger">Cancel All <FontAwesomeIcon icon={faTrashAlt} /></Button></div>
+            </td>
         </tr>);
+
         return tableArray;
     }
     function updateOrderArray(){
@@ -61,15 +82,41 @@ function AppConfirm({Order}) {
         ]);
         console.log(orderArray)
     }
+
+    async function changedata() {
+        var MenuObjectString = localStorage.getItem("menu");
+        var MenuObject = JSON.parse(MenuObjectString);
+        const OrderArray = [];
+        let UserOrderKey = Object.keys(Order.order);
+        UserOrderKey.map(orderid => {
+            let menudata = MenuObject[Order.order[orderid]["menuid"]-1];
+            var Orderdata = {} ;
+            Orderdata["name"] = menudata.title;
+            Orderdata["num"] = Order.order[orderid].quantity;
+            Orderdata["val"] = menudata.price;
+            Orderdata["menuid"] = Order.order[orderid].menuid;
+            return OrderArray.push(Orderdata);
+        })
+        return OrderArray
+    }
+    console.log(Order.order);
     async function submitOrder(){
+        const OrderArray = await changedata();
         const Customerorder = {
             "datatype" : 2,
-            "menu" : Order.order,
+            "table" : 15,
             "token":"12345",
-            "orderid": uuid()
+            "list" : OrderArray,
+            "status" : "let's cooking"
+        }
+        const Customerorder2 = {
+            "datatype" : 7,
+            "table": 15,
+            "token":"12345",
+            "menu" : Order.order
         }
         await axios.post(`${axiosConfiguration.url}/api/order`, {
-            Customerorder
+            Customerorder,Customerorder2
         }).then((response) => {
             Order.order = {};
             Order.clearOrder();
@@ -83,10 +130,12 @@ function AppConfirm({Order}) {
         }).catch((err) => {
             console.log(err)
         })
+
     }
     return (
 
         <Container >
+            {redirect}
             <Card className="mt-3 shadow p-3 mb-5 bg-white rounded">
                 <Row>
                     <Col>
