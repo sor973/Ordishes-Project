@@ -18,6 +18,10 @@ For the Back-End Customer side, we will use node.js to connect Front-End and Dat
     1. recieve order and send to mqtt
     2. send list of Customer all order to FrontEnd
 
+-Checktoken
+    
+    1.checktoken if it available or not
+
 ---------------------------------
 **TASK LIST**
 
