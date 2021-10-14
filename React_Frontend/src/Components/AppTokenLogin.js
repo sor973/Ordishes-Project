@@ -7,14 +7,10 @@ import { axiosConfiguration } from '../variable/axios';
 
 const tokenCheck = new RegExp(/^[A-Za-z0-9]+$/);
 
-function AppTokenLogin() { 
-    var InitiatedFromLocalStorage = false;
+function AppTokenLogin() {
     const params = QueryString.parse(useLocation().search);
     if(!params.token){
-        params.token = localStorage.getItem("token")
-        if(params.token){
-            InitiatedFromLocalStorage = true;
-        }
+        params.token = localStorage.getItem("token");
     }
     var initialErrorStatus = true;
     if(params.token){initialErrorStatus = false;}
@@ -27,7 +23,6 @@ function AppTokenLogin() {
         if(params.token&&tokenCheck.test(token)){
             submitHandling();
         }
-        return;
         },[]); // eslint-disable-line react-hooks/exhaustive-deps
 
     function changeHandling(e){
@@ -55,26 +50,28 @@ function AppTokenLogin() {
             token: token
         });
         if(!response.data.exist){
-            if(!InitiatedFromLocalStorage){
-                setshowerror(true);
-                seterrortext("Token is expired or doesn't exist");
-            }
             if(localStorage.getItem("token")) {
                 localStorage.removeItem("token");
                 settoken("");
                 seterrorstatus(true);
+                return
             }
+            setshowerror(true);
+            seterrortext("Token is expired or doesn't exist");
             return;
         }
-        localStorage.setItem("token", token);
-        return setredirect(<Redirect to="/menu" />);
+        if(response.data.exist){
+            localStorage.setItem("token", token);
+            setredirect(<Redirect to="/menu" />);
+            return;
+        }
     }
 
     return (
         <Container className="mt-3">
             <Row className="">
                 <Col className="col-sm-9 col-md-7 col-lg-5 mx-auto">
-                    <Card className="my-5 bg-dark text-light shadow" style={{"border-radius":"1rem"}}>
+                    <Card className="my-5 bg-dark text-light shadow" style={{"borderRadius":"1rem"}}>
                         <Card.Body>
                             <Card.Title><h3 className="text-center">Token Login</h3></Card.Title>
                             <Form>
