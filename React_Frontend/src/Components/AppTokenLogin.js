@@ -2,11 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Form, Button, Alert, Card } from 'react-bootstrap';
 import { Redirect, useLocation } from 'react-router-dom'
 import QueryString from 'query-string';
+import axios from 'axios'
+import { axiosConfiguration } from '../variable/axios';
 
 const tokenCheck = new RegExp(/^[A-Za-z0-9]+$/);
 
 function AppTokenLogin() { 
+    var InitiatedFromLocalStorage = false;
     const params = QueryString.parse(useLocation().search);
+    if(!params.token){
+        params.token = localStorage.getItem("token")
+        if(params.token){
+            InitiatedFromLocalStorage = true;
+        }
+    }
     var initialErrorStatus = true;
     if(params.token){initialErrorStatus = false;}
     const [token, settoken] = useState(params.token || "");
@@ -14,8 +23,6 @@ function AppTokenLogin() {
     const [showerror, setshowerror] = useState(false);
     const [errortext, seterrortext] = useState("");
     const [redirect, setredirect] = useState();
-    // settoken(params.token);
-    // console.log(params);
     useEffect(()=>{
         if(params.token&&tokenCheck.test(token)){
             submitHandling();
@@ -36,16 +43,30 @@ function AppTokenLogin() {
         setshowerror(false);
         if(token === ""){
             setshowerror(true);
-            seterrortext("Empty Token")
+            seterrortext("Empty Token");
             return;
         }
         if(!tokenCheck.test(token)){
             setshowerror(true);
-            seterrortext("Invalid Token.")
+            seterrortext("Invalid Token.");
             return;
         }
-        alert("Done!");
-        // localStorage.setItem("token", token);
+        const response = await axios.post(`${axiosConfiguration.url}/api/checktoken`,{
+            token: token
+        });
+        if(!response.data.exist){
+            if(!InitiatedFromLocalStorage){
+                setshowerror(true);
+                seterrortext("Token is expired or doesn't exist");
+            }
+            if(localStorage.getItem("token")) {
+                localStorage.removeItem("token");
+                settoken("");
+                seterrorstatus(true);
+            }
+            return;
+        }
+        localStorage.setItem("token", token);
         return setredirect(<Redirect to="/menu" />);
     }
 
