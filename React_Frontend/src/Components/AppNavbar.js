@@ -13,6 +13,7 @@ function AppNavbar() {
                 <Nav className="ml-auto">
                     <Nav.Link href="/menu">Menu</Nav.Link>
                     <Nav.Link href="/confirm">Order</Nav.Link>
+                    <Nav.Link href="/status">Status</Nav.Link>
                     <Nav.Link href="/checkbill">Check bill</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
