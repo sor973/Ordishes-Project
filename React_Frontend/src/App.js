@@ -8,6 +8,7 @@ import './App.css';
 import AppNavbar from './Components/AppNavbar';
 import AppMenu from './Components/AppMenu';
 import AppConfirm from './Components/AppConfirm';
+import AppStatus from './Components/AppStatus';
 import AppCheckbill from './Components/AppCheckbill';
 import AppTokenLogin from './Components/AppTokenLogin';
 
@@ -58,6 +59,11 @@ function App() {
                 <Route exact path='/confirm'>
                     <AppNavbar />
                     <AppConfirm Order={Order} />
+                </Route>
+
+                <Route exact path='/status'>
+                    <AppNavbar />
+                    <AppStatus />
                 </Route>
 
                 <Route exact path='/checkbill'>
