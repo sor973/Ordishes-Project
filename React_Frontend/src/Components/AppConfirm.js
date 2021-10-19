@@ -137,6 +137,7 @@ function AppConfirm({Order}) {
         <Container >
             {redirect}
             <Card className="mt-3 shadow p-3 mb-5 bg-white rounded">
+                <Card.Title>Order</Card.Title>
                 <Row>
                     <Col>
                         <Table striped responsive="sm" size="sm" >
