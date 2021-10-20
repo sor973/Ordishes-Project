@@ -7,7 +7,7 @@ const { MongoClient } = require('mongodb');
 const { range } = require('lodash');
 
 const url = 'mongodb://cpre_softdev:xh8Av6Qqe6goj66Ms7gr9nxiv4N6J4ZZ@192.168.42.201:27017/?authSource=cpreauth&ssl=false';
-const dbName = 'development';
+const dbName = 'ordishes';
 
 const option = {
   username: "cpre_softdev",
@@ -19,8 +19,8 @@ router.all('/', async function(req, res, next) {
     const client = new MongoClient(url);
     await client.connect();
     const db = client.db(dbName);
-    const collection = db.collection('development_stage');
-    const collection2 = db.collection('orderfornode');
+    const collection = db.collection('Order_for_Kitchen');
+    const collection2 = db.collection('Order_for_Node');
 
     var resp = req.body;
     console.log(resp);

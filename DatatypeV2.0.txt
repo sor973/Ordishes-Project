@@ -8,6 +8,7 @@ order_req           2               Order Food(Client)
 order_sta_req       3               Request Food Status(Client)
 order_sta_upd       4               Update Food Status(Kitchen/Admin)
 order_get           6               Get list of all order(*)
+order_Node          7               order for node 
 order_get_customer  8               Get Customer order for checkout
 order_paid          9               Mark Token as paid or inactive(*Backend,Cashier) Delete Token
 
