@@ -43,7 +43,7 @@ function AppCheckbill() {
         const Customerorder = {
             "datatype": 6,
             "status": "checkout",
-            "token": "12345"
+            "token": tokenObject
         };
         await axios.post(`${axiosConfiguration.url}/api/order`, {
             Customerorder
@@ -99,7 +99,8 @@ function AppCheckbill() {
         console.log(CustomerArray);
         const Checkout = {
             "datatype": 8,
-            "token": "12345",
+            "table" : 15,
+            "token": tokenObject,
             "allmenu": CustomerArray
         }
         await axios.post(`${axiosConfiguration.url}/api/checkout`, {

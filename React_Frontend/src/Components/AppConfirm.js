@@ -94,7 +94,7 @@ function AppConfirm({Order}) {
             Orderdata["name"] = menudata.title;
             Orderdata["num"] = Order.order[orderid].quantity;
             Orderdata["val"] = menudata.price;
-            Orderdata["menuid"] = Order.order[orderid].menuid;
+            Orderdata["status"] = "cooking";
             return OrderArray.push(Orderdata);
         })
         return OrderArray
@@ -130,8 +130,8 @@ function AppConfirm({Order}) {
         }).catch((err) => {
             console.log(err)
         })
-
     }
+    
     return (
 
         <Container >

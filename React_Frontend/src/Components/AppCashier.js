@@ -1,22 +1,77 @@
-import React,{ useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Row, Col, Card, Table, Button, Modal, Badge} from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCashRegister } from '@fortawesome/free-solid-svg-icons'
+import { Container, Row, Col, Card, Table, Button, Modal,} from 'react-bootstrap';
+import React, { useState, useEffect,} from 'react'
+import uuid from 'react-uuid';
 
 
-function AppCashier() {
+
+function AppCashier({Order2}) {
     const [showConfirm, setShowConfirm] = useState(false);
     const [showDeny, setShowDeny] = useState(false);
     const handleCloseConfirm = () => setShowConfirm(false);
     const handleShowConfirm = () => setShowConfirm(true);
     const handleCloseDeny = () => setShowDeny(false);
     const handleShowDeny = () => setShowDeny(true);
+    var list_CustomerOrder = [];
+    // const [CustomerArray,setCustomerArray] = useState([]);
+    const [orderArray, setOrderArray] = useState([]);
+
+    useEffect(() => {
+        async function checkbill() {
+            await listoforder()
+            setOrderArray(loopThroughMenu());
+        }
+        checkbill()
+    }, []);// eslint-disable-line react-hooks/exhaustive-deps
+
+    async function listoforder() {
+            list_CustomerOrder = Order2.allmenu;
+    }
+    function loopThroughMenu() {
+        var MenuObjectString = localStorage.getItem("menu");
+        var MenuObject = JSON.parse(MenuObjectString);
+        var TotalPrice = 0;
+        var tableArray = [];
+        let UserOrderKey = Object.keys(list_CustomerOrder);
+        UserOrderKey.map(orderid => {
+            let orderdata = list_CustomerOrder[orderid];
+            let menudata = MenuObject[orderdata["menuid"] - 1];
+            TotalPrice += orderdata.quantity * menudata.price;
+            return tableArray.push(<tr key={uuid()}>
+                <td>
+                    {menudata.title}
+                </td>
+                <td>
+                    {orderdata.quantity}
+                </td>
+                <td>
+                    {menudata.price}$
+                </td>
+                <td>
+                    {orderdata.quantity * menudata.price}$
+                </td>
+            </tr>);
+        });
+        tableArray.push(<tr key={uuid()}>
+            <td colSpan="3"><strong>Subtotal</strong> :</td>
+            <td><strong>{TotalPrice}$</strong></td>
+        </tr>);
+        tableArray.push(<tr key={uuid()}>
+            <td colSpan="3">Net Total :</td>
+            <td>{TotalPrice-(TotalPrice*7/100)}$</td>
+        </tr>);
+        tableArray.push(<tr key={uuid()}>
+            <td colSpan="3">Tax 7% :</td>
+            <td>{TotalPrice*7/100}$</td>
+        </tr>);
+        return tableArray;
+    }
+
     return (
         <Container>
             <Card className="mt-3 shadow p-3 mb-5 bg-white rounded">
                 <Card.Body>
-                    <Card.Title>Table 12</Card.Title>
+                    <Card.Title>Table {Order2.table}</Card.Title>
                     <Row>
                         <Col>
                             <Table striped responsive="sm" size="sm">
@@ -29,42 +84,7 @@ function AppCashier() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Sirloin steak</td>
-                                        <td>2</td>
-                                        <td>10$</td>
-                                        <td>20$</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Sirloin steak</td>
-                                        <td>2</td>
-                                        <td>10$</td>
-                                        <td>20$</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Sirloin steak</td>
-                                        <td>2</td>
-                                        <td>10$</td>
-                                        <td>20$</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Sirloin steak</td>
-                                        <td>2</td>
-                                        <td>10$</td>
-                                        <td>20$</td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan="3"><strong>Subtotal</strong> :</td>
-                                        <td><strong>80$</strong></td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan="3">Net Total :</td>
-                                        <td>74.4$</td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan="3">Tax 7% :</td>
-                                        <td>5.6$</td>
-                                    </tr>
+                                    {orderArray}
                                 </tbody>
                             </Table>
                         </Col>
