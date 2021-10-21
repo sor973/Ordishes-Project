@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mqtt = require('mqtt')
 var _ = require('lodash');
-
+const { v4: uuidv4 } = require('uuid');
 const { MongoClient } = require('mongodb');
 const { range } = require('lodash');
 
@@ -20,7 +20,6 @@ router.all('/', async function(req, res, next) {
     await client.connect();
     const db = client.db(dbName);
     const collection = db.collection('Order_for_Kitchen');
-    const collection2 = db.collection('Order_for_Node');
 
     var resp = req.body;
     console.log(resp);
@@ -46,22 +45,30 @@ router.all('/', async function(req, res, next) {
     }
 
     if(resp.Customerorder.datatype == 3){
-      var list = [];
-      const findstatus = await collection.find({datatype:4,token:resp.Customerorder.token}).toArray();
+      var statusdata = {};
+      var obj = {}
+      const findstatus = await collection.find({datatype:2,token:resp.Customerorder.token}).toArray();
       for (let i = 0; i < (findstatus.length); i++){
-        list.push(findstatus[i].menu[0]);
+        for (let j = 0; j < (findstatus[i].menu.length); j++){
+          obj[uuidv4()] = findstatus[i].menu[j];
+        
+        }
       }
-      console.log(list)
-      return res.send(findstatus[0])
+      statusdata["status"] = obj;
+      return res.send(statusdata)
     }
 
     if(resp.Customerorder.datatype == 6){
       var list = {};
-      const findorder = await collection2.find({datatype:7,token:resp.Customerorder.token}).toArray();
+      var obj = {}
+      const findorder = await collection.find({datatype:2,token:resp.Customerorder.token}).toArray();
+      console.log(findorder);
       for (let i = 0; i < (findorder.length); i++) {
-        list = Object.assign({}, list, findorder[i].menu);
+        for (let j = 0; j < (findorder[i].menu.length); j++){
+          obj[uuidv4()] = findorder[i].menu[j]
+        }
       }
-      return res.send(list)
+      return res.send(obj)
     }
   });
   
