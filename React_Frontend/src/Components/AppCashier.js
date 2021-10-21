@@ -2,8 +2,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Card, Table, Button, Modal,} from 'react-bootstrap';
 import React, { useState, useEffect,} from 'react'
 import uuid from 'react-uuid';
-
-
+import axios from 'axios';
+import { axiosConfiguration } from '../variable/axios';
 
 function AppCashier({Order2}) {
     const [showConfirm, setShowConfirm] = useState(false);
@@ -13,7 +13,6 @@ function AppCashier({Order2}) {
     const handleCloseDeny = () => setShowDeny(false);
     const handleShowDeny = () => setShowDeny(true);
     var list_CustomerOrder = [];
-    // const [CustomerArray,setCustomerArray] = useState([]);
     const [orderArray, setOrderArray] = useState([]);
 
     useEffect(() => {
@@ -67,6 +66,35 @@ function AppCashier({Order2}) {
         return tableArray;
     }
 
+    async function checkoutOrder(){
+        const Checkout = {
+            "datatype" : 9,
+            "token":"12345"
+        }
+      
+        await axios.post(`${axiosConfiguration.url}/api/checkout`, {
+            Checkout
+        }).then((response) => {
+            window.location.reload(false);
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+    async function checkoutOrderdeny(){
+        const Checkout = {
+            "datatype" : "a",
+            "token":"12345"
+        }
+      
+        await axios.post(`${axiosConfiguration.url}/api/checkout`, {
+            Checkout
+        }).then((response) => {
+            window.location.reload(false);
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
     return (
         <Container>
             <Card className="mt-3 shadow p-3 mb-5 bg-white rounded">
@@ -106,7 +134,7 @@ function AppCashier({Order2}) {
                                 </Modal.Body>
                                 <Modal.Footer>
                                     <Button variant="secondary" onClick={handleCloseDeny}>No</Button>
-                                    <Button variant="primary">Yes</Button>
+                                    <Button variant="primary" onClick={checkoutOrderdeny}>Yes</Button>
                                 </Modal.Footer>
                             </Modal>
                         </Col>
@@ -126,7 +154,7 @@ function AppCashier({Order2}) {
                                 </Modal.Body>
                                 <Modal.Footer>
                                     <Button variant="secondary" onClick={handleCloseConfirm}>No</Button>
-                                    <Button variant="primary">Yes</Button>
+                                    <Button variant="primary" onClick={checkoutOrder} >Yes</Button>
                                 </Modal.Footer>
                             </Modal>
                         </Col>

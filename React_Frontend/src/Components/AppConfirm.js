@@ -8,6 +8,7 @@ import { faTimes, faTrashAlt, faUtensils } from '@fortawesome/free-solid-svg-ico
 import axios from 'axios';
 import { axiosConfiguration } from '../variable/axios';
 import { TokenAuth } from '../functions/tokenAuth';
+import moment from 'moment';
 
 function AppConfirm({Order}) {
     const [orderArray, setOrderArray] = useState(loopThroughMenu());
@@ -95,19 +96,20 @@ function AppConfirm({Order}) {
             Orderdata["num"] = Order.order[orderid].quantity;
             Orderdata["val"] = menudata.price;
             Orderdata["status"] = "cooking";
+            Orderdata["detail"] = "notavailable";
             return OrderArray.push(Orderdata);
         })
         return OrderArray
     }
-    console.log(Order.order);
+    
     async function submitOrder(){
         const OrderArray = await changedata();
         const Customerorder = {
             "datatype" : 2,
+            "time" : moment().format('HH:mm'),
             "table" : 15,
             "token":"12345",
-            "list" : OrderArray,
-            "status" : "let's cooking"
+            "menu" : OrderArray,
         }
         const Customerorder2 = {
             "datatype" : 7,
