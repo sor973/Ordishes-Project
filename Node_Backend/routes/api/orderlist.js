@@ -8,13 +8,11 @@ const dbName = 'ordishes';
 
 router.get('/', async function(req, res, next) {
   
-    // const menulist = [];
     const client = new MongoClient(url);
     await client.connect();
     const db = client.db(dbName);
     const collection = db.collection('Order_Customer');
     const findmenu = await collection.find({datatype:8}).toArray();
-    // menulist.push(findmenu)
     res.send(findmenu);
 
   });

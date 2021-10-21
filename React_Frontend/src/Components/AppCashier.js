@@ -6,6 +6,7 @@ import axios from 'axios';
 import { axiosConfiguration } from '../variable/axios';
 
 function AppCashier({Order2}) {
+    var tokenObject = localStorage.getItem("token");
     const [showConfirm, setShowConfirm] = useState(false);
     const [showDeny, setShowDeny] = useState(false);
     const handleCloseConfirm = () => setShowConfirm(false);
@@ -26,28 +27,26 @@ function AppCashier({Order2}) {
     async function listoforder() {
             list_CustomerOrder = Order2.allmenu;
     }
+
     function loopThroughMenu() {
-        var MenuObjectString = localStorage.getItem("menu");
-        var MenuObject = JSON.parse(MenuObjectString);
         var TotalPrice = 0;
         var tableArray = [];
         let UserOrderKey = Object.keys(list_CustomerOrder);
         UserOrderKey.map(orderid => {
             let orderdata = list_CustomerOrder[orderid];
-            let menudata = MenuObject[orderdata["menuid"] - 1];
-            TotalPrice += orderdata.quantity * menudata.price;
+            TotalPrice += orderdata.num * orderdata.val;
             return tableArray.push(<tr key={uuid()}>
                 <td>
-                    {menudata.title}
+                    {orderdata.name}
                 </td>
                 <td>
-                    {orderdata.quantity}
+                    {orderdata.num}
                 </td>
                 <td>
-                    {menudata.price}$
+                    {orderdata.val}$
                 </td>
                 <td>
-                    {orderdata.quantity * menudata.price}$
+                    {orderdata.num * orderdata.val}$
                 </td>
             </tr>);
         });
@@ -69,7 +68,7 @@ function AppCashier({Order2}) {
     async function checkoutOrder(){
         const Checkout = {
             "datatype" : 9,
-            "token":"12345"
+            "token":tokenObject
         }
       
         await axios.post(`${axiosConfiguration.url}/api/checkout`, {
@@ -84,7 +83,7 @@ function AppCashier({Order2}) {
     async function checkoutOrderdeny(){
         const Checkout = {
             "datatype" : "a",
-            "token":"12345"
+            "token":tokenObject
         }
       
         await axios.post(`${axiosConfiguration.url}/api/checkout`, {
