@@ -10,7 +10,7 @@ const option = {
 router.post('/', async function (req, res, next) {
 
   var resp = req.body.Checkout;
-  // console.log(resp);
+  console.log(resp);
 
   if (resp.datatype == 8) {
 
@@ -30,8 +30,8 @@ router.post('/', async function (req, res, next) {
     return res.send("ok");
   }
 
-  if (resp.datatype == 9) {
-    const data = { "datatype": 9, "token": resp.token }
+  if (resp.datatype == 9 || resp.datatype == "a"  ) {
+    const data = resp
     const jsonStr = JSON.stringify(data);
 
     const client = mqtt.connect("mqtt://192.168.42.201:1884", option);
@@ -45,7 +45,7 @@ router.post('/', async function (req, res, next) {
       client.end()
     })
     console.log(jsonStr);
-    return
+    return res.send("ok");
   }
 });
 
