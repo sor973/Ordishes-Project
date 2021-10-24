@@ -43,7 +43,7 @@ function AppCheckbill() {
         const Customerorder = {
             "datatype": 6,
             "status": "checkout",
-            "token": "12345"
+            "token": tokenObject
         };
         await axios.post(`${axiosConfiguration.url}/api/order`, {
             Customerorder
@@ -56,27 +56,24 @@ function AppCheckbill() {
     }
 
     function loopThroughMenu() {
-        var MenuObjectString = localStorage.getItem("menu");
-        var MenuObject = JSON.parse(MenuObjectString);
         var TotalPrice = 0;
         var tableArray = [];
         let UserOrderKey = Object.keys(list_CustomerOrder);
         UserOrderKey.map(orderid => {
             let orderdata = list_CustomerOrder[orderid];
-            let menudata = MenuObject[orderdata["menuid"] - 1];
-            TotalPrice += orderdata.quantity * menudata.price;
+            TotalPrice += orderdata.num * orderdata.val;
             return tableArray.push(<tr key={uuid()}>
                 <td>
-                    {menudata.title}
+                    {orderdata.name}
                 </td>
                 <td>
-                    {orderdata.quantity}
+                    {orderdata.num}
                 </td>
                 <td>
-                    {menudata.price}$
+                    {orderdata.val}$
                 </td>
                 <td>
-                    {orderdata.quantity * menudata.price}$
+                    {orderdata.num * orderdata.val}$
                 </td>
             </tr>);
         });
@@ -99,7 +96,8 @@ function AppCheckbill() {
         console.log(CustomerArray);
         const Checkout = {
             "datatype": 8,
-            "token": "12345",
+            "table" : 15,
+            "token": tokenObject,
             "allmenu": CustomerArray
         }
         await axios.post(`${axiosConfiguration.url}/api/checkout`, {

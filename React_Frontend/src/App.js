@@ -8,6 +8,7 @@ import './App.css';
 import AppNavbar from './Components/AppNavbar';
 import AppMenu from './Components/AppMenu';
 import AppConfirm from './Components/AppConfirm';
+import AppStatus from './Components/AppStatus';
 import AppCheckbill from './Components/AppCheckbill';
 import AppTokenLogin from './Components/AppTokenLogin';
 
@@ -16,20 +17,27 @@ import AppCashier from './Components/AppCashier';
 import AppQRCodeGen from './Components/AppQRCodeGen';
 import { Order } from './functions/OrderOperation';
 import listofmenu from './functions/getMenu'
+import listoforder from './functions/getOrder'
 
 function App() {
 
+    var menuArray = [];
+    const [menuArray2,setArray] = useState([]);
+    var orderArray = [];
+    const [orderArray2,setOrder] = useState([]);
+    
     useEffect(() => {
         async function runapp() {
             await loopThroughMenu();
             setArray(menuArray);
         }
+        async function runapp2() {
+            await loopThroughOrder();
+            setOrder(orderArray);
+        }
         runapp()
+        runapp2()
     }, []);// eslint-disable-line react-hooks/exhaustive-deps
-    
-    const [menuArray2,setArray] = useState([]);
-
-    var menuArray = [];
 
     async function loopThroughMenu() {
         await listofmenu();   
@@ -37,9 +45,17 @@ function App() {
         let MenuObject = JSON.parse(MenuObjectString);
         for (let ind = 0; ind < MenuObject.length; ind++) {
             menuArray.push(<AppMenu key={uuid()} menuindex={ind} Order={Order} />);
+            
         }
     }
 
+    async function loopThroughOrder() {
+        var Allorder = await listoforder();   
+        for (let ind = 0; ind < Allorder.length; ind++) {
+            orderArray.push(<AppCashier key={uuid()} orderindex={ind} Order2={Allorder[ind]} />);
+        }
+    }
+    
     return (
         <Router>
             <Switch>
@@ -60,6 +76,11 @@ function App() {
                     <AppConfirm Order={Order} />
                 </Route>
 
+                <Route exact path='/status'>
+                    <AppNavbar />
+                    <AppStatus />
+                </Route>
+
                 <Route exact path='/checkbill'>
                     <AppNavbar />
                     <AppCheckbill />
@@ -68,7 +89,11 @@ function App() {
                 {/*Cashier and token */}
                 <Route exact path='/cashier'>
                     <AppNavbarCashier />
-                    <AppCashier />
+                    <Container>
+                        <Row className="d-flex justify-content-center mt-3">
+                            {orderArray2}
+                        </Row>
+                    </Container>
                 </Route>
                 <Route exact path='/qrcodegen'>
                     <AppNavbarCashier />

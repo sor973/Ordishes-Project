@@ -50,6 +50,7 @@ LIST OF NODE_MODULES
 - cors
 - lodash
 - mongodb
+- uuid
 ----------------------------------------
 
 You can istall NODE_MODULES BY usig this command **PS. cd to BackEnd folder first** \

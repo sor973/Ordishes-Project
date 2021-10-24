@@ -9,29 +9,44 @@ const option = {
 
 router.post('/', async function (req, res, next) {
 
-    var resp = req.body.Checkout;
-    console.log(resp);
+  var resp = req.body.Checkout;
+  console.log(resp);
 
-    if (resp.datatype == 8) {
-        return res.send(resp);
-    }
-    if (resp.datatype == 9) {
-        const data = { "datatype": 9, "token": resp.token }
-        const jsonStr = JSON.stringify(data);
+  if (resp.datatype == 8) {
 
-        const client = mqtt.connect("mqtt://192.168.42.201:1884",option);
-        client.on('connect', function () {
-              client.publish('/ordish/', jsonStr)
-              console.log("Connected to ordish")
-            })
-        
-        client.on('message', function (topic, message) {
-          console.log(message.toString())
-          client.end()
-        })
-        console.log(jsonStr);
-        return 
-    }
+    const jsonStr = JSON.stringify(resp);
+    
+    const client = mqtt.connect("mqtt://192.168.42.201:1884", option);
+    client.on('connect', function () {
+      client.publish('/ordish/', jsonStr)
+      console.log("Connected to ordish")
+    })
+
+    client.on('message', function (topic, message) {
+      console.log(message.toString())
+      client.end()
+    })
+    console.log(jsonStr);
+    return res.send("ok");
+  }
+
+  if (resp.datatype == 9 || resp.datatype == "a"  ) {
+    const data = resp
+    const jsonStr = JSON.stringify(data);
+
+    const client = mqtt.connect("mqtt://192.168.42.201:1884", option);
+    client.on('connect', function () {
+      client.publish('/ordish/', jsonStr)
+      console.log("Connected to ordish")
+    })
+
+    client.on('message', function (topic, message) {
+      console.log(message.toString())
+      client.end()
+    })
+    console.log(jsonStr);
+    return res.send("ok");
+  }
 });
 
 module.exports = router;

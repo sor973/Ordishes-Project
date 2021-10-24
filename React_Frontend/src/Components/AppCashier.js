@@ -1,22 +1,104 @@
-import React,{ useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Row, Col, Card, Table, Button, Modal, Badge} from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCashRegister } from '@fortawesome/free-solid-svg-icons'
+import { Container, Row, Col, Card, Table, Button, Modal,} from 'react-bootstrap';
+import React, { useState, useEffect,} from 'react'
+import uuid from 'react-uuid';
+import axios from 'axios';
+import { axiosConfiguration } from '../variable/axios';
 
-
-function AppCashier() {
+function AppCashier({Order2}) {
+    var tokenObject = localStorage.getItem("token");
     const [showConfirm, setShowConfirm] = useState(false);
     const [showDeny, setShowDeny] = useState(false);
     const handleCloseConfirm = () => setShowConfirm(false);
     const handleShowConfirm = () => setShowConfirm(true);
     const handleCloseDeny = () => setShowDeny(false);
     const handleShowDeny = () => setShowDeny(true);
+    var list_CustomerOrder = [];
+    const [orderArray, setOrderArray] = useState([]);
+
+    useEffect(() => {
+        async function checkbill() {
+            await listoforder()
+            setOrderArray(loopThroughMenu());
+        }
+        checkbill()
+    }, []);// eslint-disable-line react-hooks/exhaustive-deps
+
+    async function listoforder() {
+            list_CustomerOrder = Order2.allmenu;
+    }
+
+    function loopThroughMenu() {
+        var TotalPrice = 0;
+        var tableArray = [];
+        let UserOrderKey = Object.keys(list_CustomerOrder);
+        UserOrderKey.map(orderid => {
+            let orderdata = list_CustomerOrder[orderid];
+            TotalPrice += orderdata.num * orderdata.val;
+            return tableArray.push(<tr key={uuid()}>
+                <td>
+                    {orderdata.name}
+                </td>
+                <td>
+                    {orderdata.num}
+                </td>
+                <td>
+                    {orderdata.val}$
+                </td>
+                <td>
+                    {orderdata.num * orderdata.val}$
+                </td>
+            </tr>);
+        });
+        tableArray.push(<tr key={uuid()}>
+            <td colSpan="3"><strong>Subtotal</strong> :</td>
+            <td><strong>{TotalPrice}$</strong></td>
+        </tr>);
+        tableArray.push(<tr key={uuid()}>
+            <td colSpan="3">Net Total :</td>
+            <td>{TotalPrice-(TotalPrice*7/100)}$</td>
+        </tr>);
+        tableArray.push(<tr key={uuid()}>
+            <td colSpan="3">Tax 7% :</td>
+            <td>{TotalPrice*7/100}$</td>
+        </tr>);
+        return tableArray;
+    }
+
+    async function checkoutOrder(){
+        const Checkout = {
+            "datatype" : 9,
+            "token":tokenObject
+        }
+      
+        await axios.post(`${axiosConfiguration.url}/api/checkout`, {
+            Checkout
+        }).then((response) => {
+            window.location.reload(false);
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+    async function checkoutOrderdeny(){
+        const Checkout = {
+            "datatype" : "a",
+            "token":tokenObject
+        }
+      
+        await axios.post(`${axiosConfiguration.url}/api/checkout`, {
+            Checkout
+        }).then((response) => {
+            window.location.reload(false);
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
     return (
         <Container>
             <Card className="mt-3 shadow p-3 mb-5 bg-white rounded">
                 <Card.Body>
-                    <Card.Title>Table 12</Card.Title>
+                    <Card.Title>Table {Order2.table}</Card.Title>
                     <Row>
                         <Col>
                             <Table striped responsive="sm" size="sm">
@@ -29,42 +111,7 @@ function AppCashier() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Sirloin steak</td>
-                                        <td>2</td>
-                                        <td>10$</td>
-                                        <td>20$</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Sirloin steak</td>
-                                        <td>2</td>
-                                        <td>10$</td>
-                                        <td>20$</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Sirloin steak</td>
-                                        <td>2</td>
-                                        <td>10$</td>
-                                        <td>20$</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Sirloin steak</td>
-                                        <td>2</td>
-                                        <td>10$</td>
-                                        <td>20$</td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan="3"><strong>Subtotal</strong> :</td>
-                                        <td><strong>80$</strong></td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan="3">Net Total :</td>
-                                        <td>74.4$</td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan="3">Tax 7% :</td>
-                                        <td>5.6$</td>
-                                    </tr>
+                                    {orderArray}
                                 </tbody>
                             </Table>
                         </Col>
@@ -86,7 +133,7 @@ function AppCashier() {
                                 </Modal.Body>
                                 <Modal.Footer>
                                     <Button variant="secondary" onClick={handleCloseDeny}>No</Button>
-                                    <Button variant="primary">Yes</Button>
+                                    <Button variant="primary" onClick={checkoutOrderdeny}>Yes</Button>
                                 </Modal.Footer>
                             </Modal>
                         </Col>
@@ -106,7 +153,7 @@ function AppCashier() {
                                 </Modal.Body>
                                 <Modal.Footer>
                                     <Button variant="secondary" onClick={handleCloseConfirm}>No</Button>
-                                    <Button variant="primary">Yes</Button>
+                                    <Button variant="primary" onClick={checkoutOrder} >Yes</Button>
                                 </Modal.Footer>
                             </Modal>
                         </Col>
