@@ -16,6 +16,7 @@ function AppMenu({menuindex, Order}) {
     const [dish, updateDish] = useState(0);
     const [maxDishStatus, updateMaxDishStatus] = useState(false);
     const [redirect, setredirect] = useState();
+    const [detail, setDetail] = useState('');
     const componentIsMounted = useRef(true);
 
     const[showOrder, setShowOrder] = useState(false);
@@ -54,6 +55,8 @@ function AppMenu({menuindex, Order}) {
         Order.addOrder(menuid, dish);
         updateDish(0);
     }
+
+    console.log(detail);
 
     return (
         <Col sm="12" lg="4">
@@ -109,7 +112,7 @@ function AppMenu({menuindex, Order}) {
                                                                 <Form>
                                                                     <Form.Group>
                                                                         <Form.Label>Detail (optional)</Form.Label>
-                                                                        <Form.Control type="text" placeholder="Enter detail here" />
+                                                                        <Form.Control type="text" placeholder="Enter detail here" onChange={event => setDetail(event.target.value)} />
                                                                     </Form.Group>
                                                                 </Form>
                                                             </Col>
