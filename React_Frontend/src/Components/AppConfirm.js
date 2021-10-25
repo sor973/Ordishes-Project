@@ -52,7 +52,7 @@ function AppConfirm({Order}) {
                             </Row>
                         </Card.Title>
                         <Row xs="auto">
-                            <Col xs={10} ><p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p></Col>
+                            <Col xs={10} ><p>{orderdata.detail}</p></Col>
                             <Col xs={2} className="d-flex justify-content-between"><span></span><FontAwesomeIcon className="text-danger text-right" icon={faTimes} onClick={() => { Order.delOrder(orderid); updateOrderArray(); }} size="lg" style={{ "cursor": "pointer" }} /></Col>
                         </Row>
 
