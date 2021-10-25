@@ -97,7 +97,7 @@ function AppConfirm({Order}) {
             Orderdata["num"] = Order.order[orderid].quantity;
             Orderdata["val"] = menudata.price;
             Orderdata["status"] = "cooking";
-            Orderdata["detail"] = "notavailable";
+            Orderdata["detail"] = Order.order[orderid].detail;
             return OrderArray.push(Orderdata);
         })
         return OrderArray
