@@ -12,8 +12,8 @@ function getOrder(){
 function setPersistOrder(){
     localStorage.setItem("order", JSON.stringify(Order.order));
 }
-function addOrder(menuid,quantity){
-    Order.order[uuid()]={menuid,quantity};
+function addOrder(menuid,quantity,detail){
+    Order.order[uuid()]={menuid,quantity,detail};
     setPersistOrder();
 }
 function delOrder(orderid){
