@@ -52,11 +52,9 @@ function AppMenu({menuindex, Order}) {
     }
 
     function startOrder(){
-        Order.addOrder(menuid, dish);
+        Order.addOrder(menuid, dish, detail);
         updateDish(0);
     }
-
-    console.log(detail);
 
     return (
         <Col sm="12" lg="4">
