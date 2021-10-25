@@ -93,6 +93,7 @@ function AppCheckbill() {
             <td colSpan="3">Tax 7% :</td>
             <td>{TotalPrice*7/100}$</td>
         </tr>);
+        statusButton(tableArray)
         return tableArray;
     }
 
@@ -114,7 +115,16 @@ function AppCheckbill() {
         console.log("send");
     }
 
-    
+    function statusButton(arr){
+        console.log(arr);
+        console.log(arr.length);
+        if(arr.length <= 3) {
+            setDisableButton(true);
+        }
+        else {
+            setDisableButton(false);
+        }
+    }
 
     return (
         <Container>
@@ -163,6 +173,7 @@ function AppCheckbill() {
                 <Row>
                     <Col className="d-flex justify-content-center">
                         <Button variant="outline-success" onClick={handleShow} disabled={disableButton} >Check bill <FontAwesomeIcon icon={faMoneyCheckAlt} /></Button>
+                        {console.log(!orderArray.length)}
                         <Modal
                             show={show}
                             onHide={handleClose}
