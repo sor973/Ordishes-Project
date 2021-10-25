@@ -65,19 +65,19 @@ function AppMenu({menuindex, Order}) {
                         <Card.Body>
                             <Card.Title>
                                 <Row>
-                                    <Col>
+                                    <Col xs={9}>
                                         {menu.title}
                                     </Col>
-                                    <Col>
+                                    <Col xs={3}>
                                         <p className="text-right"><strong>{menu.price}$</strong></p>
                                     </Col>
                                 </Row>
                             </Card.Title>
                             <Row>
                                 <Col md="12" className="d-flex align-items-center">
-                                    <Card.Text>
+                                    {/* <Card.Text>
                                         This is the title in card bootstrap
-                                    </Card.Text>
+                                    </Card.Text> */}
                                 </Col >
                                 <Col md="12" className="mt-2">
                                     <Form>
@@ -91,7 +91,7 @@ function AppMenu({menuindex, Order}) {
                                                     </ButtonGroup>
                                                     <Button variant="outline-success" disabled={!dish} onClick={() => startOrder()} className="my-2">Order <FontAwesomeIcon icon={faUtensils} /></Button> */}
                                                     <p></p>
-                                                    <Button variant="outline-success" onClick={() => setShowOrder(true)} className="mt-4">Order !</Button>
+                                                    <Button variant="outline-success" onClick={() => setShowOrder(true)}>Order !</Button>
                                                     <Modal show={showOrder}
                                                         onHide={() => setShowOrder(false)}
                                                         // backdrop="static"
