@@ -63,6 +63,11 @@ function AppCheckbill() {
         var TotalPrice = 0;
         var tableArray = [];
         let UserOrderKey = Object.keys(list_CustomerOrder);
+        if(UserOrderKey.length === 0) {
+            setDisableButton(true);
+        }else{
+            setDisableButton(false);
+        }
         UserOrderKey.map(orderid => {
             let orderdata = list_CustomerOrder[orderid];
             TotalPrice += orderdata.num * orderdata.val;
@@ -93,7 +98,6 @@ function AppCheckbill() {
             <td colSpan="3">Tax 7% :</td>
             <td>{TotalPrice*7/100}$</td>
         </tr>);
-        statusButton(tableArray)
         return tableArray;
     }
 
@@ -113,17 +117,6 @@ function AppCheckbill() {
             console.log(err)
         })
         console.log("send");
-    }
-
-    function statusButton(arr){
-        console.log(arr);
-        console.log(arr.length);
-        if(arr.length <= 3) {
-            setDisableButton(true);
-        }
-        else {
-            setDisableButton(false);
-        }
     }
 
     return (
