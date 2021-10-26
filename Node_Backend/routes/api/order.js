@@ -3,11 +3,8 @@ var router = express.Router();
 var mqtt = require('mqtt')
 var _ = require('lodash');
 const { v4: uuidv4 } = require('uuid');
-const { MongoClient } = require('mongodb');
 const { range } = require('lodash');
-
-const url = 'mongodb://cpre_softdev:xh8Av6Qqe6goj66Ms7gr9nxiv4N6J4ZZ@192.168.42.201:27017/?authSource=cpreauth&ssl=false';
-const dbName = 'ordishes';
+const Mongodb = require('../../database/MongoClient');
 
 const option = {
   username: "cpre_softdev",
@@ -15,10 +12,9 @@ const option = {
 };
 
 router.all('/', async function(req, res, next) {
-
-    const client = new MongoClient(url);
-    await client.connect();
-    const db = client.db(dbName);
+    await Mongodb.function.mongodbInitAndConnect();
+    const client = Mongodb.instance.client;
+    const db = client.db(Mongodb.variable.database_name);
     const collection = db.collection('Order_for_Kitchen');
 
     var resp = req.body;
