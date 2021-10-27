@@ -22,16 +22,13 @@ router.all('/', async function(req, res, next) {
 
     if(resp.Customerorder.datatype == 2 ) {
       const data = resp.Customerorder
-      const data2 = resp.Customerorder2
       const jsonStr = JSON.stringify(data);
-      const jsonStr2 = JSON.stringify(data2);
       const client = mqtt.connect("mqtt://192.168.42.201:1884",option);
       client.on('connect', function () {
             client.publish('/ordish/', jsonStr);
-            client.publish('/ordish/', jsonStr2);
             console.log("Connected to ordish");
           })
-      
+    
       client.on('message', function (topic, message) {
         console.log(message.toString())
         client.end()

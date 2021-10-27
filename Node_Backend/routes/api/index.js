@@ -7,6 +7,7 @@ const urlRouter = require("./url");
 const checktokenRouter = require("./checktoken");
 const checkoutRouter = require("./checkout");
 const orderlistRouter = require("./orderlist");
+const tableRouter = require("./table");
 
 router.get('/', (res,req) => {
     res.setEncoding("Welcome To Back_End Node.js");
@@ -18,5 +19,6 @@ router.use('/url',urlRouter);
 router.use('/checkout',checkoutRouter);
 router.use('/checktoken',checktokenRouter);
 router.use('/orderlist',orderlistRouter);
+router.use('/table',tableRouter);
 
 module.exports = router;

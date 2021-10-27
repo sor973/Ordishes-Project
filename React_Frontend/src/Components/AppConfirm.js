@@ -103,10 +103,11 @@ function AppConfirm({Order}) {
     
     async function submitOrder(){
         const OrderArray = await changedata();
+        var tableObject = localStorage.getItem("table");
         const Customerorder = {
             "datatype" : 2,
             "time" : moment().format('HH:mm'),
-            "table" : 15,
+            "table" : tableObject,
             "token":tokenObject,
             "menu" : OrderArray,
         }
