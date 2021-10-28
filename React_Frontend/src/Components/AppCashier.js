@@ -67,9 +67,10 @@ function AppCashier({Order2}) {
     }
 
     async function checkoutOrder(){
+        var tokenObject = localStorage.getItem("token");
         const Checkout = {
             "datatype" : 9,
-            "token":tokenObject
+            "token": Order2.token
         }
         await axios.post(`${axiosConfiguration.url}/api/checkout`, {
             Checkout
@@ -85,7 +86,7 @@ function AppCashier({Order2}) {
     async function checkoutOrderdeny(){
         const Checkout = {
             "datatype" : "a",
-            "token":tokenObject
+            "token": Order2.token
         }
         await axios.post(`${axiosConfiguration.url}/api/checkout`, {
             Checkout
