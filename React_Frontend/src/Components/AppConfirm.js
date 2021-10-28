@@ -60,7 +60,7 @@ function AppConfirm({Order}) {
                 </Card>);
         });
         tableArray.push(
-            <Row>
+            <Row key={uuid()}>
                 <Col className="d-flex justify-content-between my-2">
                     <strong>Total Price : {TotalPrice}$</strong>
                     <div className="d-flex justify-content-center"><Button disabled={!Object.keys(Order.order).length} onClick={cancelAllOrder} size="sm" variant="outline-danger">Cancel All <FontAwesomeIcon icon={faTrashAlt} /></Button></div>
