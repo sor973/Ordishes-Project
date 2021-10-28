@@ -22,26 +22,23 @@ function AppCheckbill() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     useEffect(()=>{
+        async function checkbill() {
+            await listoforder()
+            setOrderArray(loopThroughMenu());
+        }
         async function doAuth(){
             if(!localStorage.getItem('token')) if(componentIsMounted.current) return setredirect(<Redirect to="/" />);
             let getTokenStatus = await TokenAuth.tokenAuthCheck(localStorage.getItem('token'))
             if(!getTokenStatus){
                 if(componentIsMounted.current) return setredirect(<Redirect to="/" />);
             }
-        } 
+            if(componentIsMounted.current) await checkbill();
+        }
         doAuth();
         return () => {
             componentIsMounted.current = false;
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-    useEffect(() => {
-        async function checkbill() {
-            await listoforder()
-            setOrderArray(loopThroughMenu());
-        }
-        checkbill()
-    }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
     async function listoforder() {
         const Customerorder = {
