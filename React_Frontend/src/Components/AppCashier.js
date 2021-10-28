@@ -9,6 +9,7 @@ function AppCashier({Order2}) {
     var tokenObject = localStorage.getItem("token");
     const [showConfirm, setShowConfirm] = useState(false);
     const [showDeny, setShowDeny] = useState(false);
+    const [showCashier, setShowCashier] = useState(true);
     const handleCloseConfirm = () => setShowConfirm(false);
     const handleShowConfirm = () => setShowConfirm(true);
     const handleCloseDeny = () => setShowDeny(false);
@@ -70,11 +71,12 @@ function AppCashier({Order2}) {
             "datatype" : 9,
             "token":tokenObject
         }
-      
         await axios.post(`${axiosConfiguration.url}/api/checkout`, {
             Checkout
         }).then((response) => {
-            window.location.reload(false);
+            setShowConfirm(false);
+            setShowCashier(false);
+            // window.location.reload(true);
         }).catch((err) => {
             console.log(err)
         })
@@ -85,18 +87,19 @@ function AppCashier({Order2}) {
             "datatype" : "a",
             "token":tokenObject
         }
-      
         await axios.post(`${axiosConfiguration.url}/api/checkout`, {
             Checkout
         }).then((response) => {
-            window.location.reload(false);
+            setShowConfirm(false);
+            setShowCashier(false);
+            // window.location.reload(true);
         }).catch((err) => {
             console.log(err)
         })
     }
     return (
         <Container>
-            <Card className="mt-3 shadow p-3 mb-5 bg-white rounded">
+            {showCashier && <Card className="mt-3 shadow p-3 mb-5 bg-white rounded">
                 <Card.Body>
                     <Card.Title>Table {Order2.table}</Card.Title>
                     <Row>
@@ -159,7 +162,7 @@ function AppCashier({Order2}) {
                         </Col>
                     </Row>
                 </Card.Body>
-            </Card>
+            </Card>}
         </Container>
     )
 }
