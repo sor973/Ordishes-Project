@@ -1,5 +1,5 @@
 import React,{ useEffect, useRef } from 'react'
-import { Container, Row, Col, Table, Button, Alert, Card } from 'react-bootstrap';
+import { Container, Row, Col, Button, Alert, Card, Badge } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 import uuid from 'react-uuid';
 import { useState } from 'react';
@@ -39,35 +39,33 @@ function AppConfirm({Order}) {
         let UserOrderKey = Object.keys(Order.order);
         UserOrderKey.map(orderid => {
             let orderdata = Order.order[orderid]
-            let menudata = MenuObject[orderdata["menuid"]-1];
-            TotalPrice+=orderdata.quantity*menudata.price;
-            return tableArray.push(<tr key={uuid()}>
-                <td>
-                    {menudata.title}
-                </td>
-                <td>
-                    {orderdata.quantity}
-                </td>
-                <td>
-                    {menudata.price}$
-                </td>
-                <td>
-                    {orderdata.quantity*menudata.price}$
-                </td>
-                <td>
-                    <div className="d-flex justify-content-center">
-                        <FontAwesomeIcon className="text-danger" icon={faTimes} onClick={()=>{Order.delOrder(orderid);updateOrderArray();}} size="lg" style={{"cursor": "pointer"}}/>
-                    </div>
-                </td>
-            </tr>);
+            let menudata = MenuObject[orderdata["menuid"] - 1];
+            TotalPrice += orderdata.quantity * menudata.price;
+            return tableArray.push(
+                <Card key={uuid()} className="my-2">
+                    <Card.Body>
+                        <Card.Title>
+                            <Row xs="auto">
+                                <Col xs={2}><Badge variant="success">x{orderdata.quantity}</Badge></Col>
+                                <Col xs={7}>{menudata.title}</Col>
+                                <Col xs={3} className="text-right">{menudata.price}$</Col>
+                            </Row>
+                        </Card.Title>
+                        <Row xs="auto">
+                            <Col xs={10} ><p>{orderdata.detail}</p></Col>
+                            <Col xs={2} className="d-flex justify-content-between"><span></span><FontAwesomeIcon className="text-danger text-right" icon={faTimes} onClick={() => { Order.delOrder(orderid); updateOrderArray(); }} size="lg" style={{ "cursor": "pointer" }} /></Col>
+                        </Row>
+
+                    </Card.Body>
+                </Card>);
         });
-        tableArray.push(<tr key={uuid()}>
-            <td colSpan="3"><strong>Total Price</strong></td>
-            <td><strong>{TotalPrice}$</strong></td>
-            <td>
-                <div className="d-flex justify-content-center"><Button disabled={!Object.keys(Order.order).length} onClick={cancelAllOrder} size="sm" variant="outline-danger">Cancel All <FontAwesomeIcon icon={faTrashAlt} /></Button></div>
-            </td>
-        </tr>);
+        tableArray.push(
+            <Row key={uuid()}>
+                <Col className="d-flex justify-content-between my-2">
+                    <strong>Total Price : {TotalPrice}$</strong>
+                    <div className="d-flex justify-content-center"><Button disabled={!Object.keys(Order.order).length} onClick={cancelAllOrder} size="sm" variant="outline-danger">Cancel All <FontAwesomeIcon icon={faTrashAlt} /></Button></div>
+                </Col>
+            </Row>);
         return tableArray;
     }
 
@@ -97,7 +95,7 @@ function AppConfirm({Order}) {
             Orderdata["num"] = Order.order[orderid].quantity;
             Orderdata["val"] = menudata.price;
             Orderdata["status"] = "cooking";
-            Orderdata["detail"] = "notavailable";
+            Orderdata["detail"] = Order.order[orderid].detail;
             return OrderArray.push(Orderdata);
         })
         return OrderArray
@@ -105,11 +103,13 @@ function AppConfirm({Order}) {
     
     async function submitOrder(){
         const OrderArray = await changedata();
+        var tableObjectString = localStorage.getItem("table");
+        var tableObject = JSON.parse(tableObjectString);
         const Customerorder = {
             "datatype" : 2,
             "time" : moment().format('HH:mm'),
-            "table" : 15,
-            "token":tokenObject,
+            "table" : tableObject,
+            "token": tokenObject,
             "menu" : OrderArray,
         }
         await axios.post(`${axiosConfiguration.url}/api/order`, {
@@ -136,24 +136,11 @@ function AppConfirm({Order}) {
                 <Card.Title>Order</Card.Title>
                 <Row>
                     <Col>
-                        <Table striped responsive="sm" size="sm" >
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Qty</th>
-                                    <th>Price</th>
-                                    <th>Total</th>
-                                    <th className="text-center">Cancel</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {orderArray}
-                            </tbody>
-                        </Table>
+                        {orderArray}
                     </Col>
                 </Row>
                 <Row>
-                    <Col className="d-flex justify-content-center">
+                    <Col className="d-flex justify-content-center my-2">
                         <Button variant="success" disabled={!Object.keys(Order.order).length} onClick={submitOrder}>Submit Order <FontAwesomeIcon icon={faUtensils} /></Button>
                     </Col>
                 </Row>
@@ -163,6 +150,7 @@ function AppConfirm({Order}) {
                     </Col>
                 </Row>
             </Card>
+
 
 
         </Container>

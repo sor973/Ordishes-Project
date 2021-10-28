@@ -16,8 +16,9 @@ import AppNavbarCashier from './Components/AppNavbarCashier';
 import AppCashier from './Components/AppCashier';
 import AppQRCodeGen from './Components/AppQRCodeGen';
 import { Order } from './functions/OrderOperation';
-import listofmenu from './functions/getMenu'
-import listoforder from './functions/getOrder'
+import listofmenu from './functions/getMenu';
+import listoforder from './functions/getOrder';
+
 
 function App() {
 
@@ -41,6 +42,7 @@ function App() {
 
     async function loopThroughMenu() {
         await listofmenu();   
+        // await getable();
         let MenuObjectString = localStorage.getItem("menu");
         let MenuObject = JSON.parse(MenuObjectString);
         for (let ind = 0; ind < MenuObject.length; ind++) {

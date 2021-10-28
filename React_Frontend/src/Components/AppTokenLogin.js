@@ -62,6 +62,14 @@ function AppTokenLogin() {
         }
         if(response.data.exist){
             localStorage.setItem("token", token);
+            await axios.post(`${axiosConfiguration.url}/api/table`, {
+                token
+            }).then((response) => {
+                console.log("acees")
+                localStorage.setItem("table", JSON.stringify(response.data.table));
+            }).catch((err) => {
+                console.log(err)
+            })
             setredirect(<Redirect to="/menu" />);
             return;
         }

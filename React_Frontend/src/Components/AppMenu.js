@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useEffect, useRef } from 'react';
 import { Redirect } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Row, Col, Card, Button, Form, ButtonGroup, Modal, Container, Image } from 'react-bootstrap'
+import { Row, Col, Card, Button, Form, ButtonGroup, Modal, Image } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus, faUtensils } from '@fortawesome/free-solid-svg-icons'
 import { TokenAuth } from '../functions/tokenAuth';
@@ -16,6 +16,7 @@ function AppMenu({menuindex, Order}) {
     const [dish, updateDish] = useState(0);
     const [maxDishStatus, updateMaxDishStatus] = useState(false);
     const [redirect, setredirect] = useState();
+    const [detail, setDetail] = useState('');
     const componentIsMounted = useRef(true);
 
     const[showOrder, setShowOrder] = useState(false);
@@ -51,7 +52,7 @@ function AppMenu({menuindex, Order}) {
     }
 
     function startOrder(){
-        Order.addOrder(menuid, dish);
+        Order.addOrder(menuid, dish, detail);
         updateDish(0);
     }
 
@@ -64,19 +65,19 @@ function AppMenu({menuindex, Order}) {
                         <Card.Body>
                             <Card.Title>
                                 <Row>
-                                    <Col>
+                                    <Col xs={9}>
                                         {menu.title}
                                     </Col>
-                                    <Col>
+                                    <Col xs={3}>
                                         <p className="text-right"><strong>{menu.price}$</strong></p>
                                     </Col>
                                 </Row>
                             </Card.Title>
                             <Row>
                                 <Col md="12" className="d-flex align-items-center">
-                                    <Card.Text>
+                                    {/* <Card.Text>
                                         This is the title in card bootstrap
-                                    </Card.Text>
+                                    </Card.Text> */}
                                 </Col >
                                 <Col md="12" className="mt-2">
                                     <Form>
@@ -90,9 +91,9 @@ function AppMenu({menuindex, Order}) {
                                                     </ButtonGroup>
                                                     <Button variant="outline-success" disabled={!dish} onClick={() => startOrder()} className="my-2">Order <FontAwesomeIcon icon={faUtensils} /></Button> */}
                                                     <p></p>
-                                                    <Button variant="outline-success" onClick={() => setShowOrder(true)} className="mt-4">Order !</Button>
+                                                    <Button variant="outline-success" onClick={() => setShowOrder(true)}>Order !</Button>
                                                     <Modal show={showOrder}
-                                                        onHide={() => setShowOrder(false)}
+                                                        onHide={() => {setShowOrder(false); setDetail("")}}
                                                         // backdrop="static"
                                                         keyboard={false}
                                                     >
@@ -109,7 +110,7 @@ function AppMenu({menuindex, Order}) {
                                                                 <Form>
                                                                     <Form.Group>
                                                                         <Form.Label>Detail (optional)</Form.Label>
-                                                                        <Form.Control type="text" placeholder="Enter detail here" />
+                                                                        <Form.Control type="text" placeholder="Enter detail here" onChange={event => setDetail(event.target.value)} />
                                                                     </Form.Group>
                                                                 </Form>
                                                             </Col>
@@ -125,7 +126,7 @@ function AppMenu({menuindex, Order}) {
                                                         </Row>
                                                         <Row className="mx-3">
                                                             <Col className="d-flex justify-content-center">
-                                                                <Button variant="outline-success" disabled={!dish} onClick={() => startOrder()} className="my-3 px-4">Order <FontAwesomeIcon icon={faUtensils} /></Button>
+                                                                <Button variant="outline-success" disabled={!dish} onClick={() => {startOrder();setShowOrder(false);setDetail("")}} className="my-3 px-4">Order <FontAwesomeIcon icon={faUtensils} /></Button>
                                                             </Col>
                                                         </Row>
                                                         {/* <Card>

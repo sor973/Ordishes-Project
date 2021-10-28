@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Redirect } from 'react-router-dom';
 import uuid from 'react-uuid';
 import moment from 'moment';
-import { Container, Row, Col, Table, Card, Button } from 'react-bootstrap';
+import { Container, Row, Col, Table, Card, Button, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUtensils, faMoneyCheckAlt } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios';
@@ -17,27 +17,28 @@ function AppCheckbill() {
     var tokenObject = localStorage.getItem("token");
     const [redirect, setredirect] = useState();
     const componentIsMounted = useRef(true);
+    const [show, setShow] = useState(false);
+    const [disableButton, setDisableButton] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
     useEffect(()=>{
+        async function checkbill() {
+            await listoforder()
+            setOrderArray(loopThroughMenu());
+        }
         async function doAuth(){
             if(!localStorage.getItem('token')) if(componentIsMounted.current) return setredirect(<Redirect to="/" />);
             let getTokenStatus = await TokenAuth.tokenAuthCheck(localStorage.getItem('token'))
             if(!getTokenStatus){
                 if(componentIsMounted.current) return setredirect(<Redirect to="/" />);
             }
-        } 
+            if(componentIsMounted.current) await checkbill();
+        }
         doAuth();
         return () => {
             componentIsMounted.current = false;
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-    useEffect(() => {
-        async function checkbill() {
-            await listoforder()
-            setOrderArray(loopThroughMenu());
-        }
-        checkbill()
-    }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
     async function listoforder() {
         const Customerorder = {
@@ -59,6 +60,11 @@ function AppCheckbill() {
         var TotalPrice = 0;
         var tableArray = [];
         let UserOrderKey = Object.keys(list_CustomerOrder);
+        if(UserOrderKey.length === 0) {
+            setDisableButton(true);
+        }else{
+            setDisableButton(false);
+        }
         UserOrderKey.map(orderid => {
             let orderdata = list_CustomerOrder[orderid];
             TotalPrice += orderdata.num * orderdata.val;
@@ -94,6 +100,8 @@ function AppCheckbill() {
 
     async function checkbill() {
         console.log(CustomerArray);
+        setShow(false);
+        setDisableButton(true);
         const Checkout = {
             "datatype": 8,
             "table" : 15,
@@ -154,7 +162,25 @@ function AppCheckbill() {
                 </Row>
                 <Row>
                     <Col className="d-flex justify-content-center">
-                        <Button variant="outline-success" onClick = { checkbill } >Check bill <FontAwesomeIcon icon={faMoneyCheckAlt} /></Button>
+                        <Button variant="outline-success" onClick={handleShow} disabled={disableButton} >Check bill <FontAwesomeIcon icon={faMoneyCheckAlt} /></Button>
+                        {console.log(!orderArray.length)}
+                        <Modal
+                            show={show}
+                            onHide={handleClose}
+                            // backdrop="static"
+                            keyboard={false}
+                        >
+                            <Modal.Header closeButton>
+                                <Modal.Title>Are you sure?</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                Are you sure to submit?
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={handleClose}>No</Button>
+                                <Button variant="primary" onClick={checkbill}>Yes</Button>
+                            </Modal.Footer>
+                        </Modal>
                     </Col>
                 </Row>
             </Card>

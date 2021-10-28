@@ -38,16 +38,15 @@ function AppStatus() {
     }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
     async function statusrequest() {
+
         const Customerorder = {
             "datatype": 3,
-            "table" : 15,
             "token" : tokenObject
         };
         await axios.post(`${axiosConfiguration.url}/api/order`, {
             Customerorder
         }).then((response) => {
             list_CustomerOrder = response.data.status;
-            
         }).catch((err) => {
             console.log(err)
         })

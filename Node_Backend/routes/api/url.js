@@ -3,10 +3,11 @@ var router = express.Router();
 var generator = require('generate-password');
 var mqtt = require('mqtt');
 var _ = require('lodash');
-
-const { MongoClient } = require('mongodb');
-const url = 'mongodb://cpre_softdev:xh8Av6Qqe6goj66Ms7gr9nxiv4N6J4ZZ@192.168.42.201:27017/?authSource=cpreauth&ssl=false';
-const dbName = 'ordishes';
+const Mongodb = require('../../database/MongoClient');
+const urlinfo = {
+  scheme:"https",
+  domain:"ordishes.cinnamonpyro.com:8444"
+}
 
 const option = {
   username: "cpre_softdev",
@@ -15,10 +16,9 @@ const option = {
 
 
 router.post('/', async function(req, res, next) {
-    
-    const client2 = new MongoClient(url);
-    await client2.connect();
-    const db = client2.db(dbName);
+    await Mongodb.function.mongodbInitAndConnect();
+    const client2 = Mongodb.instance.client;
+    const db = client2.db(Mongodb.variable.database_name);
     const collection = db.collection('token');
 
     var resp = req.body.Table;
@@ -45,7 +45,7 @@ router.post('/', async function(req, res, next) {
     const data = {"datatype": 1, "table": resp.table,"token": key}
     const jsonStr = JSON.stringify(data);
     
-    let web  = `https://www.ordishes.com/?token=${key}`;
+    let web  = `${urlinfo.scheme}://${urlinfo.domain}/?token=${key}`;
 
     const client = mqtt.connect("mqtt://192.168.42.201:1884",option);
     client.on('connect', function () {
