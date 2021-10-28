@@ -4,6 +4,10 @@ var generator = require('generate-password');
 var mqtt = require('mqtt');
 var _ = require('lodash');
 const Mongodb = require('../../database/MongoClient');
+const urlinfo = {
+  scheme:"https",
+  domain:"ordishes.cinnamonpyro.com:8444"
+}
 
 const option = {
   username: "cpre_softdev",
@@ -41,7 +45,7 @@ router.post('/', async function(req, res, next) {
     const data = {"datatype": 1, "table": resp.table,"token": key}
     const jsonStr = JSON.stringify(data);
     
-    let web  = `https://www.ordishes.com/?token=${key}`;
+    let web  = `${urlinfo.scheme}://${urlinfo.domain}/?token=${key}`;
 
     const client = mqtt.connect("mqtt://192.168.42.201:1884",option);
     client.on('connect', function () {
