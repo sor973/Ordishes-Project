@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useEffect, useRef } from 'react';
 import { Redirect } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Row, Col, Card, Button, Form, ButtonGroup, Modal, Container, Image } from 'react-bootstrap'
+import { Row, Col, Card, Button, Form, ButtonGroup, Modal, Image } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus, faUtensils } from '@fortawesome/free-solid-svg-icons'
 import { TokenAuth } from '../functions/tokenAuth';
@@ -93,7 +93,7 @@ function AppMenu({menuindex, Order}) {
                                                     <p></p>
                                                     <Button variant="outline-success" onClick={() => setShowOrder(true)}>Order !</Button>
                                                     <Modal show={showOrder}
-                                                        onHide={() => setShowOrder(false)}
+                                                        onHide={() => {setShowOrder(false); setDetail("")}}
                                                         // backdrop="static"
                                                         keyboard={false}
                                                     >
@@ -126,7 +126,7 @@ function AppMenu({menuindex, Order}) {
                                                         </Row>
                                                         <Row className="mx-3">
                                                             <Col className="d-flex justify-content-center">
-                                                                <Button variant="outline-success" disabled={!dish} onClick={() => startOrder()} className="my-3 px-4">Order <FontAwesomeIcon icon={faUtensils} /></Button>
+                                                                <Button variant="outline-success" disabled={!dish} onClick={() => {startOrder();setShowOrder(false);setDetail("")}} className="my-3 px-4">Order <FontAwesomeIcon icon={faUtensils} /></Button>
                                                             </Col>
                                                         </Row>
                                                         {/* <Card>
