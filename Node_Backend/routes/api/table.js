@@ -5,7 +5,7 @@ const Mongodb = require('../../database/MongoClient');
 
 router.post('/', async function(req, res, next) {
     await Mongodb.function.mongodbInitAndConnect();
-    var resp = req.body.table;
+    var resp = req.body;
     const client = Mongodb.instance.client;
     const db = client.db(Mongodb.variable.database_name);
     const collection = db.collection('token');

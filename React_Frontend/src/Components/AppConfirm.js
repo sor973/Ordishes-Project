@@ -103,12 +103,13 @@ function AppConfirm({Order}) {
     
     async function submitOrder(){
         const OrderArray = await changedata();
-        var tableObject = localStorage.getItem("table");
+        var tableObjectString = localStorage.getItem("table");
+        var tableObject = JSON.parse(tableObjectString);
         const Customerorder = {
             "datatype" : 2,
             "time" : moment().format('HH:mm'),
             "table" : tableObject,
-            "token":tokenObject,
+            "token": tokenObject,
             "menu" : OrderArray,
         }
         await axios.post(`${axiosConfiguration.url}/api/order`, {

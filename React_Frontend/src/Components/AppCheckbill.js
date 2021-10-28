@@ -44,9 +44,8 @@ function AppCheckbill() {
     }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
     async function listoforder() {
-        var tableObject = localStorage.getItem("table");
         const Customerorder = {
-            "datatype": tableObject,
+            "datatype": 6,
             "status": "checkout",
             "token": tokenObject
         };

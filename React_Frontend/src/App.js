@@ -18,7 +18,7 @@ import AppQRCodeGen from './Components/AppQRCodeGen';
 import { Order } from './functions/OrderOperation';
 import listofmenu from './functions/getMenu';
 import listoforder from './functions/getOrder';
-import getable from './functions/getTable';
+
 
 function App() {
 
@@ -42,7 +42,7 @@ function App() {
 
     async function loopThroughMenu() {
         await listofmenu();   
-        await getable();
+        // await getable();
         let MenuObjectString = localStorage.getItem("menu");
         let MenuObject = JSON.parse(MenuObjectString);
         for (let ind = 0; ind < MenuObject.length; ind++) {
