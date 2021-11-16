@@ -12,7 +12,7 @@ For the Back-End Customer side, we will use node.js to connect Front-End and Dat
     2. Generate token
     3. Process The data and send it via MQTT in this form {datatype:1, table:85, token:"123456"}
     4. Send URL with the token back to The Front-End like this “https://www.ordishes.com/?token=as#pf” 
-
+/n
 - Orders
 
     1. recieve order and send to mqtt
