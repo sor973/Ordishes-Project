@@ -3,41 +3,38 @@ Back-End Nodejs
 For the Back-End Customer side, we will use node.js to connect Front-End and Database by sending or receiving the data via MQTT and MongoDB, Node.js will handle all the necessary things in the Customer side Example. request data from Database and send API to show it in Front-End or registry some information to Database
 
 ---------------------------------
+### Cashier
+- Url
+    - [x] Get **table** data  from Cashier Front-End 
+    - [x] Generate token
+    - [x] Check data in database and send it via MQTT 
+    - [x] Send url login response back to Cashier Front-End 
+- Checkout
+    - [x] Get **paid order** data from Cashier Front-End 
+    - [x] send data via MQTT 
+- Orderlist
+    - [x] read All Orderlist in database 
+    - [x] send All Orderlist data APi 
 
-**Progress**
-
-- QR-Code
-
-    1. Receive Table number from Front-End 
-    2. Generate token
-    3. Process The data and send it via MQTT in this form {datatype:1, table:85, token:"123456"}
-    4. Send URL with the token back to The Front-End like this “https://www.ordishes.com/?token=as#pf” 
-/br
-- Orders
-
-    1. recieve order and send to mqtt
-    2. send list of Customer all order to FrontEnd
-
+### Customer
+- Table
+    - [x] Get request & data **token** from Customer Front-End
+    - [x] Send table data response back to Customer Front-End 
+- Menu
+    - [x] read Menu from database
+    - [x] send Menu data APi
 - Checktoken
-    
-    1. Checktoken in in database and send back the signal to Frontend
-
----------------------------------
-**TASK LIST**
-
-- [x] QR-Code
-    - [x] recieve table data
-    - [x] generate token
-    - [x] send data to MQTT
-    - [x] send url API
-- [X] Orders
-    - [x] recieve order
-    - [x] list of order
-- [x] send List of Menu to FrontEnd
-- [x] Connect to MongoDB to read data
-
-- [ ]  Kitchen
-
+    - [x] Get request & data **token** from Customer Front-End
+    - [x] Checktoken in in database and send back the signal to Frontend
+- Orders
+    - [x] Get request & data from Customer Front-End
+    - [x] Check datatype Ex. request status, request order, request checkout
+    - [x] if request order Send order to MQTT
+    - [x] if request status Read status in database and send back status response
+    - [x] if request checkout Read Orderlist from database and send back OrderList response
+- Checkout
+    - [x] Get request & data **Checkout** from Customer Front-End
+    - [x] send data via MQTT  
 
 ----------------------------------------
 INSTALL NODE_MODULES BEFORE RUNNING 
