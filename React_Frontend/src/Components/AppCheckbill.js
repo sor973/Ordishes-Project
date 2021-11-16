@@ -102,9 +102,11 @@ function AppCheckbill() {
         console.log(CustomerArray);
         setShow(false);
         setDisableButton(true);
+        var tableObjectString = localStorage.getItem("table");
+        var tableObject = JSON.parse(tableObjectString);
         const Checkout = {
             "datatype": 8,
-            "table" : 15,
+            "table" : tableObject,
             "token": tokenObject,
             "allmenu": CustomerArray
         }
