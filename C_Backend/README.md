@@ -122,6 +122,41 @@ graph TD
     F -->|status : cancel| K -->  I[update data in MongoDB]
 ```
 -------------------------------------
+# Ordishes Project - C Kitchen
+### main in work
+- submit datajson.string from MQTT.
+- tranform datajson.string to data.BSON/BCON.
+- show list dish to chef.
+- can selection the order to check finish/cancel.
+- sent data.BSON/BCON to update data in MongoDB.
+
+## Progress of C Kitchen
+in second week C Kitchen
+- MQTT & MongoDB @Noraset.K
+    - [x] test publish datajson.string. 
+    - [x] edit datajson.string to data.BSON/BCON.
+    - [x] check data is orderid.
+    - [x] update data in MongoDB.
+-------------------------------------
+- GTK.c @jiwjiw2580 
+    - [x] design GUI(GTK) use GTK Dynamic List view. 
+    - [x] append list from datajson.string to show chef what's it in order.
+    - [x] get string from select list do chef want to update.
+    - [x] clear list when chef updated.
+-------------------------------------
+## flow for second week.
+```mermaid
+graph TD
+    A[kitchen] --> B(MQTT)
+    B --> |get datajson.string| C[show list order to chef will see]
+    C --> D[GTK Dynamic List view]
+    D --> |when chef finish order| E[Finish]
+    D --> |when chef cancel order| F[Cancel]
+    E --> K[edit datajson.string]
+    F --> K --> J[datajson.string to data.BSON/BCON]
+    J --> I[update data in MongoDB]
+```
+-------------------------------------
 # Ordishes Project - C Backend third_week
 ### main in work
 - publish data.JSON from web customer
@@ -159,3 +194,29 @@ graph TD
     N --> |update data| E
     N --> |delete data| H
 ```
+-------------------------------------
+# Ordishes Project - C Backend final
+### main in work
+- edit new GTK_UI kitchen
+- merge C\_backend and C\_kitchen
+
+## Progress of C Backend
+in final C Backend
+- [x] edit new GTK_UI kitchen
+- [x] merge C\_backend and C\_kitchen
+-------------------------------------
+## flow for final C.
+```mermaid
+graph TD
+    A[start GTK] -->|submit string_json from NodeJS| B[c_backend : MQTT]
+
+    B --> |when it get token from table| H[add data_token in database]
+
+    B --> |when it is order| C[append in treelist_GTK to show to chef]
+    C --> |when chef finish order| D[edit finish order]
+    C --> |when chef cancel order| E[edit cancel order]
+    D & E --> F[show status to customer]
+
+    B --> |when customer bill| G[delete all data in database]
+```
+-------------------------------------
