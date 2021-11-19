@@ -29,12 +29,12 @@ graph TB
     - [x] Design user interface **confirm order page**.
     - [x] Design user interface **check bill page**.
     - [x] Design **token login page**.
-    - [ ] Design user interface **status page**.
+    - [x] Design user interface **status page**.
 - User interface design (cashier) by using React.
     - [x] Design user interface **cashier page**.
     - [x] Design user interface **qr code generate page**.
 - User interface design (kitchen) by using GTK C language.
-    - [ ] Design user interface kitchen window application.
+    - [x] Design user interface kitchen window application.
 ***
 ### Coding button function.
 - Coding button function to connect to back-end side.
@@ -50,7 +50,7 @@ graph TB
     - **qr code generate page** (cashier).
         - [x] Coding button `generate QR code`.
     - **kitchen application** (kitchen).
-        - [ ] Coding some function in kitchen application.
+        - [x] Coding some function in kitchen application.
 ***
 ### Redesign front-end with bootstrap-react.
 - User interface design by using Bootstrap-react.
